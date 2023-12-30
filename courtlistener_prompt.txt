@@ -1,0 +1,11 @@
+I have a bunch of large CSV files (maybe too large to read into memory), and will want to do database like operations on them (like joining and selecting), and at the end end up again with a CSV file.
+
+
+opinion-clusters-2023-08-31.csv
+id,date_created,date_modified,judges,date_filed,date_filed_is_approximate,slug,case_name_short,case_name,case_name_full,scdb_id,scdb_decision_direction,scdb_votes_majority,scdb_votes_minority,source,procedural_history,attorneys,nature_of_suit,posture,syllabus,headnotes,summary,disposition,history,other_dates,cross_reference,correction,citation_count,precedential_status,date_blocked,blocked,filepath_json_harvard,docket_id,arguments,headmatter
+
+opinions-2023-08-31.csv
+id,date_created,date_modified,author_str,per_curiam,joined_by_str,type,sha1,page_count,download_url,local_path,plain_text,html,html_lawbox,html_columbia,html_anon_2020,xml_harvard,html_with_citations,extracted_by_ocr,author_id,cluster_id
+
+citation-map-2023-08-31.csv
+id,depth,cited_opinion_id,citing_opinion_id

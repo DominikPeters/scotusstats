@@ -1,0 +1,84 @@
+.j1-chart-container {
+    max-width: 100%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.j1-chart-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 7px;
+    margin-bottom: 20px;  
+}
+
+.j1-chart-title {
+    font-size: 21px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.j1-chart-subtitle {
+    font-size: 15px;
+    margin: 0;
+}
+
+.j1-chart-footer {
+    font-size: 14px;
+    margin: 15px 0 0 0;
+    color: #555;
+}
+
+.j1-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 3px;
+}
+
+.j1-bar-description {
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+}
+
+.j1-bar-fill-container {
+    flex: 1;
+    height: 30px;
+    position: relative;
+    background-color: #f0f0f0;
+}
+
+.j1-bar-fill {
+    height: 100%;
+    background-color: #4CAF50;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.j1-bar-label {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    color: white;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+.j1-bar-label.j1-outside {
+    color: black;
+    white-space: nowrap;
+    margin-left: 5px;
+}
+
+.j1-circle-image {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+    border: 2px solid #4CAF50;
+    border-radius: 50%;
+    object-fit: cover;
+}

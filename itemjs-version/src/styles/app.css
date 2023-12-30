@@ -1,0 +1,134 @@
+.header {
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+  padding: 0.5rem 1rem;
+  background-image: linear-gradient(284deg, #fedd4e, #fcb43a);
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.header-title {
+  font-size: 1.2rem;
+  font-weight: normal;
+}
+
+.header-title::after {
+  content: ' ▸ ';
+  padding: 0 0.5rem;
+}
+
+.header-subtitle {
+  font-size: 1.2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.search-panel {
+  display: flex;
+}
+
+.search-panel__filters {
+  flex: 1;
+}
+
+.search-panel__results {
+  flex: 3;
+}
+
+.ais-Highlight-highlighted {
+  color: inherit;
+  font-size: inherit;
+}
+
+.ais-DynamicWidgets-widget {
+  max-width: 300px;
+}
+
+.ais-HierarchicalMenu-link--selected {
+  font-weight: bold;
+}
+
+.ais-HierarchicalMenu-link {
+  /* align-items: start; */
+}
+
+.ais-HierarchicalMenu-link::before {
+  transform: rotate(90deg);
+  transition: transform 0.2s ease-in-out;
+  min-width: 1rem;
+}
+
+.ais-HierarchicalMenu-link--selected::before {
+  transform: rotate(180deg);
+}
+
+.ais-HierarchicalMenu-label, .ais-Menu-label, .ais-RefinementList-labelText {
+  /* overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; */
+  white-space: wrap;
+}
+
+.ais-HierarchicalMenu-showMore, .ais-Menu-showMore, .ais-RefinementList-showMore {
+  margin-top: 0.5rem;
+}
+
+.ais-CurrentRefinements {
+  margin-bottom: 0.5rem;
+}
+
+.ais-CurrentRefinements-item {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.ais-CurrentRefinements-category {
+  margin-left: 0.4rem;
+  background-color: hsl(240, 33%, 93%);
+  padding: 0 0.3rem;
+  border-radius: 0.4rem;
+}
+
+.ais-CurrentRefinements-categoryLabel{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 300px;
+}
+
+.ais-CurrentRefinements-delete {
+  line-height: 1.5;
+}
+
+.ais-CurrentRefinements-delete:hover {
+  color: hsl(240, 53%, 50%);
+}
+
+.ais-Hits-item {
+  padding: 0.2rem 0.8rem;
+  line-height: 1;
+}
+
+#searchbox {
+  margin-bottom: 2rem;
+}
+
+#pagination {
+  margin: 2rem auto;
+  text-align: center;
+}
+
+svg text {
+  cursor: text;
+}

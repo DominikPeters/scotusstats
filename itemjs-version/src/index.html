@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="shortcut icon" href="./favicon.png">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.1.0/themes/satellite-min.css">
+  <link rel="stylesheet" href="styles/index.css">
+  <link rel="stylesheet" href="styles/app.css">
+  <link rel="stylesheet" href="styles/j1-chart.css">
+
+  <title>scotusstats</title>
+</head>
+
+<body>
+  <header class="header">
+    <h1 class="header-title">
+      <a href="/">scotusstats</a>
+    </h1>
+    <p class="header-subtitle">
+      using
+      <a href="https://github.com/algolia/instantsearch/tree/master/packages/instantsearch.js">
+        InstantSearch.js
+      </a>
+    </p>
+  </header>
+
+  <div class="container">
+    <div class="search-panel">
+      <div class="search-panel__filters">
+        <div id="term-refinement"></div>
+        <div id="lowerCourt-refinement"></div>
+        <div id="issue-refinement"></div>
+        <div id="legalProvision-refinement"></div>
+        <div id="flags-refinement"></div>
+        <div id="decision-refinement"></div>
+        <div id="majorityWriter-refinement"></div>
+        <div id="majorityVoters-refinement"></div>
+        <div id="my-widgets"></div>
+      </div>
+
+      <div class="search-panel__results">
+        <!-- <div id="searchbox"></div> -->
+        <div id="applied-filters"></div>
+        <div id="charts"></div>
+        <div id="hits"></div>
+        <div id="pagination"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="bundle.js" type="module"></script>
+</body>
+
+</html>

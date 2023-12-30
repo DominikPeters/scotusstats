@@ -1,3 +1,6 @@
+*.json
+*.xml
+
 # Logs
 logs
 *.log
