@@ -4,11 +4,13 @@ import agreementPairsChart from './charts/voting/agreementPairs.js';
 import agreementTriplesChart from './charts/voting/agreementTriples.js';
 
 import fractionWordsChart from './charts/argument/fractionWords.js';
+import argumentLengthScatterChart from './charts/argument/argumentLengthScatter.js';
 import advocateTimeChart from './charts/argument/advocateTime.js';
 
 import numberMajorityOpinionsWrittenChart from './charts/opinions/numberMajorityOpinionsWritten.js';
 import opinionDelayScatterChart from './charts/opinions/opinionDelayScatter.js';
 
+import numberCasesDecidedChart from './charts/cases/numberCasesDecided.js';
 import topicsTreeMapChart from './charts/cases/topicsTreeMap.js';
 
 function buildChart(chartFunction, chartId, chartsContainer, hits) {
@@ -43,6 +45,7 @@ export function buildCharts(hits) {
     chartsContainer.appendChild(h2);
 
     buildChart(fractionWordsChart, "fraction-words-chart", chartsContainer, hits);
+    buildChart(argumentLengthScatterChart, "argument-length-scatter-chart", chartsContainer, hits);
     buildChart(advocateTimeChart, "advocate-time-chart", chartsContainer, hits);
 
     // opinions charts
@@ -58,5 +61,6 @@ export function buildCharts(hits) {
     h2.innerText = "Cases";
     chartsContainer.appendChild(h2);
 
+    buildChart(numberCasesDecidedChart, "number-cases-decided-chart", chartsContainer, hits);
     buildChart(topicsTreeMapChart, "topics-tree-map-chart", chartsContainer, hits);
 }
