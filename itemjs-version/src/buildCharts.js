@@ -4,6 +4,7 @@ import agreementPairsChart from './charts/voting/agreementPairs.js';
 import agreementTriplesChart from './charts/voting/agreementTriples.js';
 
 import fractionWordsChart from './charts/argument/fractionWords.js';
+import wordsSpokenOverTimeChart from './charts/argument/wordsSpokenOverTime.js';
 import argumentLengthScatterChart from './charts/argument/argumentLengthScatter.js';
 import advocateTimeChart from './charts/argument/advocateTime.js';
 
@@ -45,6 +46,7 @@ export function buildCharts(hits) {
     chartsContainer.appendChild(h2);
 
     buildChart(fractionWordsChart, "fraction-words-chart", chartsContainer, hits);
+    buildChart(wordsSpokenOverTimeChart, "words-spoken-over-time-chart", chartsContainer, hits);
     buildChart(argumentLengthScatterChart, "argument-length-scatter-chart", chartsContainer, hits);
     buildChart(advocateTimeChart, "advocate-time-chart", chartsContainer, hits);
 
