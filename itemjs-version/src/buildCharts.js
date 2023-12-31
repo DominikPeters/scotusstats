@@ -4,6 +4,7 @@ import frequencyInMajorityOverTimeChart from './charts/voting/frequencyInMajorit
 import fractionWordsChart from './charts/argument/fractionWords.js';
 
 import numberMajorityOpinionsWrittenChart from './charts/opinions/numberMajorityOpinionsWritten.js';
+import opinionDelayScatterChart from './charts/opinions/opinionDelayScatter.js';
 
 export function buildCharts(hits) {
     if (!hits) return;
@@ -36,4 +37,10 @@ export function buildCharts(hits) {
     numberMajorityOpinionsWrittenChartContainer.className = "j1-chart-container";
     chartsContainer.appendChild(numberMajorityOpinionsWrittenChartContainer);
     numberMajorityOpinionsWrittenChart(numberMajorityOpinionsWrittenChartContainer, hits);
+
+    const opinionDelayScatterChartContainer = document.createElement('div');
+    opinionDelayScatterChartContainer.id = "opinion-delay-scatter-chart";
+    opinionDelayScatterChartContainer.className = "j1-chart-container";
+    chartsContainer.appendChild(opinionDelayScatterChartContainer);
+    opinionDelayScatterChart(opinionDelayScatterChartContainer, hits);
 }
