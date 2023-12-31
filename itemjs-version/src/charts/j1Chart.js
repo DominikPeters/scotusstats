@@ -93,9 +93,19 @@ export function j1Chart(containerElement, options) {
         let maxDescriptionWidth = 0;
         const maxValue = maxDataValue || Math.max(...Object.values(data));
 
+        // get screen width
+        const width = window.innerWidth
+            || document.documentElement.clientWidth
+            || document.body.clientWidth;
+
+        containerElement.querySelectorAll('.j1-group-members-text').forEach(text => {
+            text.style.display = width < 950 ? 'none' : 'inline';
+        });
+
         // First pass
         containerElement.querySelectorAll('.j1-bar').forEach(bar => {
             const description = bar.querySelector('.j1-bar-description');
+            description.style.width = 'auto';
             maxDescriptionWidth = Math.max(maxDescriptionWidth, description.offsetWidth);
         });
 

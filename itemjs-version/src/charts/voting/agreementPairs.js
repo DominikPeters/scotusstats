@@ -54,17 +54,20 @@ export default function agreementPairsChart(agree) {
         // top pairs
         let topPairs;
         if (agree) {
-            topPairs = Object.entries(numAgreements).sort((a, b) => b[1] - a[1]).slice(0, 7).map(pair => justicePairs[pair[0]]);
+            topPairs = Object.entries(numAgreements).sort((a, b) => b[1] - a[1]).slice(0, 7);
         } else {
-            topPairs = Object.entries(numAgreements).sort((a, b) => a[1] - b[1]).slice(0, 5).map(pair => justicePairs[pair[0]]);
+            topPairs = Object.entries(numAgreements).sort((a, b) => a[1] - b[1]).slice(0, 5);
         }
         let topPairData = {};
         for (const pair of topPairs) {
-            // topPairData[`${justiceName(pair[0])} & ${justiceName(pair[1])}`] = (numAgreements[pair.join('-')] / numCases[pair.join('-')] * 100).toFixed(1);
-            const justice1 = justiceName(pair[0]);
-            const justice2 = justiceName(pair[1]);
-            const description = `<span class="j1-justice-pair"><img src="/img/justices/${justice1}.png" alt="${justice1}" class="j1-circle-image" /><img src="/img/justices/${justice2}.png" alt="${justice2}" class="j1-circle-image" /> ${justice1} & ${justice2}</span>`;
-            topPairData[description] = (numAgreements[pair.join('-')] / numCases[pair.join('-')] * 100).toFixed(1);
+            const justice1 = justiceName(pair[0].split('-')[0]);
+            const justice2 = justiceName(pair[0].split('-')[1]);    
+            const description = `<span class="j1-justice-pair">
+                <img src="/img/justices/${justice1}.png" alt="${justice1}" class="j1-circle-image" />
+                <img src="/img/justices/${justice2}.png" alt="${justice2}" class="j1-circle-image" />
+                <span class="j1-group-members-text">${justice1} & ${justice2}</span>
+            </span>`;
+            topPairData[description] = pair[1] / numCases[pair[0]] * 100;
         }
 
         j1Chart(
