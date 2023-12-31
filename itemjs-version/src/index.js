@@ -91,7 +91,7 @@ fetch("/data/flattened_records.json")
 let search;
 
 function buildSearch(data) {
-  console.log(data);
+  // console.log(data);
 
   const index = createIndex(data, options);
   const searchClient = getSearchClient(index);

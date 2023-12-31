@@ -3,6 +3,7 @@
     padding: 20px;
     border: 1px solid #ccc;
     margin-bottom: 10px;
+    overflow: hidden;
 }
 
 .j1-chart-header {
@@ -17,11 +18,13 @@
     font-size: 21px;
     font-weight: bold;
     margin: 0;
+    width: 100%;
 }
 
 .j1-chart-subtitle {
     font-size: 15px;
     margin: 0;
+    width: 100%;
 }
 
 .j1-chart-footer {
