@@ -1,10 +1,16 @@
 import * as echarts from 'echarts';
 
-export function echartsContainer(containerElement, options) {
-    const { echartsOptions, title = '', subtitle = '' } = options;
+let allEcharts = {};
 
-    // Clear existing bars
+export function echartsContainer(containerElement, options) {
+    const { echartsOptions, height = '400px', title = '', subtitle = '' } = options;
+
+    // Clear existing chart
+    if (allEcharts[containerElement.id]) {
+        allEcharts[containerElement.id].dispose();
+    }
     containerElement.innerHTML = '';
+    
 
     // Create header
     if (title || subtitle) {
@@ -31,8 +37,9 @@ export function echartsContainer(containerElement, options) {
     const chartElement = document.createElement('div');
     containerElement.appendChild(chartElement);
     chartElement.style.width = "100%";
-    chartElement.style.height = "400px";
-    var chart = echarts.init(chartElement, null, {renderer: 'svg'});
+    chartElement.style.height = height;
+    
+    let chart = echarts.init(chartElement, null, {renderer: 'svg'});
     chart.setOption(echartsOptions);
 
     // Create footer
@@ -41,5 +48,21 @@ export function echartsContainer(containerElement, options) {
     footer.textContent = 'Chart: scotusstats.com';
     containerElement.appendChild(footer);
 
-    window.addEventListener('resize', () => chart.resize());
+    // workaround a bug where only one of the charts will resize, so do one resize for all charts
+    // https://github.com/apache/echarts/issues/13004
+    // https://codepen.io/plainheart/pen/yLagoGW
+    // https://github.com/apache/echarts/issues/7483
+    function showChartDom(chart, visible) {
+        chart.getZr().painter.getViewportRoot().style.display = visible ? "" : "none";
+    }
+    if (Object.keys(allEcharts).length === 0) {
+        window.addEventListener('resize', () => {
+            Object.values(allEcharts).forEach((chart) => showChartDom(chart, false));
+            Object.values(allEcharts).forEach((chart) => chart.resize());
+            Object.values(allEcharts).forEach((chart) => showChartDom(chart, true));
+            console.log(allEcharts);
+        });
+    }
+
+    allEcharts[containerElement.id] = chart;
 }

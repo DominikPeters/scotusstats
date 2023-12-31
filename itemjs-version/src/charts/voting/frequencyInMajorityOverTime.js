@@ -89,10 +89,11 @@ export default function frequencyInMajorityOverTimeChart(element, hits) {
                 series: series,
                 animation: false,
                 grid: {
-                    top: 10,
-                    bottom: 20,
-                    left: 30,
-                    right: 10 + 2 * terms.length
+                    top: 5,
+                    bottom: 0,
+                    left: 0,
+                    right: 0 + 3.5 * terms.length,
+                    containLabel: true
                 },
             }
         }
