@@ -3,7 +3,6 @@
     padding: 20px;
     border: 1px solid #ccc;
     margin-bottom: 10px;
-    overflow: hidden;
 }
 
 .j1-chart-header {
@@ -82,6 +81,13 @@
     height: 40px;
     margin-right: 8px;
     border: 2px solid #4CAF50;
+    background-color: white;
     border-radius: 50%;
     object-fit: cover;
+}
+
+.j1-circle-image:hover {
+    transform: scale(1.2);
+    transition: transform 0.2s;
+    z-index: 1;
 }

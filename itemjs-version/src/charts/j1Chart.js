@@ -1,6 +1,6 @@
 
 export function j1Chart(containerElement, options) {
-    const { data, maxDataValue, dataSuffix = '', showImage = true, title = '', subtitle = '' } = options;
+    const { data, maxDataValue, dataFormatter = (v) => v , dataSuffix = '', showImage = true, title = '', subtitle = '' } = options;
 
     // Function to create a bar
     function createBar(justiceName, value) {
@@ -88,7 +88,7 @@ export function j1Chart(containerElement, options) {
             const value = parseInt(label.getAttribute('data-value'));
             const description = bar.querySelector('.j1-bar-description');
 
-            label.textContent = value + dataSuffix;
+            label.textContent = dataFormatter(value) + dataSuffix;
             description.style.width = maxDescriptionWidth + 'px';
             const fillWidth = (value / maxValue) * 100;
             fill.style.width = fillWidth + '%';
