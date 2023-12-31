@@ -1,13 +1,13 @@
 export function hitListItemTemplate(hit, { html, components }) {
     return html`
-<article>
+<article class="hitlist-item">
     <details>
         <summary>
-            [${hit.docket_number}] <strong>${hit.name}</strong>
+            <span class="hitlist-docket-number">[${hit.docket_number}]</span> <strong>${hit.name}</strong>
         </summary>
         <p>
-            <strong>Term:</strong> ${hit.term}.
-            <strong>Lower court:</strong> ${hit.lowerCourt}.
+            <strong>Term:</strong> ${hit.term}. <br/>
+            <strong>Lower court:</strong> ${hit.lowerCourt}. <br/>
             <a href="https://www.oyez.org/cases/${hit.term}/${hit.docket_number}">Oyez</a>
         </p>
     </details>

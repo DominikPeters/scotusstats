@@ -102,7 +102,7 @@ function buildSearch(data) {
     initialUiState: {
       scotusstats: {
           refinementList: {
-              term: ['2022', '2021', '2020'],
+              term: ['2022', '2021', '2020', '2019'],
           },
       }
     },
@@ -198,9 +198,9 @@ function buildSearch(data) {
         return items;
       }
     }),
-    pagination({
-      container: '#pagination',
-    }),
+    // pagination({
+    //   container: '#pagination',
+    // }),
   ]);
 
   search.start();

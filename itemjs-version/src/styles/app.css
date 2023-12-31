@@ -117,7 +117,16 @@
 
 .ais-Hits-item {
   padding: 0.2rem 0.8rem;
-  line-height: 1;
+  line-height: 1.2;
+}
+
+.hitlist-item details summary {
+  cursor: pointer;
+}
+
+.hitlist-item .hitlist-docket-number {
+  min-width: 70px;
+  display: inline-block;
 }
 
 #searchbox {
