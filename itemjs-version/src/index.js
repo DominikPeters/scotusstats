@@ -5,13 +5,12 @@ import { hitListItemTemplate } from './hitList.js';
 import { buildCharts } from './buildCharts.js';
 import { unflattenHits } from './utils.js';
 
-// get data by fet
 const options = {
   searchableFields: ["name"],
   query: "",
   aggregations: {
     term: {
-      title: "term",
+      title: "Term",
       size: 10,
       conjunction: false
     },
@@ -33,7 +32,7 @@ const options = {
       size: 10
     },
     "legalProvision.lvl0": {
-      title: "legalProvision.lvl0",
+      title: "Legal Provision",
       size: 10
     },
     "legalProvision.lvl1": {
@@ -45,15 +44,16 @@ const options = {
       size: 10
     },
     flags: {
-      title: "flags",
+      title: "Flags",
       size: 10
     },
     "decision.type": {
-      title: "decision.type",
-      size: 10
+      title: "Decision",
+      size: 10,
+      conjunction: false
     },
     "decision.majorityWriter": {
-      title: "decision.majorityWriter",
+      title: "Majority writer",
       size: 10,
       conjunction: false
     },
@@ -191,6 +191,12 @@ function buildSearch(data) {
     }),
     currentRefinements({
       container: '#applied-filters',
+      transformItems(items) {
+        for (const item of items) {
+          item.label = options.aggregations[item.attribute].title;
+        }
+        return items;
+      }
     }),
     pagination({
       container: '#pagination',
