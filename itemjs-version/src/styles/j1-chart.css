@@ -1,3 +1,8 @@
+/* set chart color variable */
+body {
+    --j1-chart-color: #4CAF50;
+}
+
 .j1-chart-container {
     max-width: 100%;
     padding: 20px;
@@ -55,7 +60,7 @@
 
 .j1-bar-fill {
     height: 100%;
-    background-color: #4CAF50;
+    background-color: var(--j1-chart-color);
     position: absolute;
     top: 0;
     left: 0;
@@ -80,7 +85,7 @@
     width: 40px;
     height: 40px;
     margin-right: 8px;
-    border: 2px solid #4CAF50;
+    border: 2px solid var(--j1-chart-color);
     background-color: white;
     border-radius: 50%;
     object-fit: cover;
@@ -91,3 +96,13 @@
     transition: transform 0.2s;
     z-index: 1;
 }
+
+.j1-justice-pair, .j1-justice-triple {
+    display: flex;
+    align-items: center;
+}
+
+.j1-justice-pair img:first-child, .j1-justice-triple img:first-child, .j1-justice-triple img:nth-child(2) {
+    margin-right: -3px;
+}
+
