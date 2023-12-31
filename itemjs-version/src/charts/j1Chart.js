@@ -1,6 +1,16 @@
 
 export function j1Chart(containerElement, options) {
-    const { data, maxDataValue, dataFormatter = (v) => v , dataSuffix = '', showImage = true, title = '', subtitle = '' } = options;
+    const {
+        data,
+        maxDataValue,
+        sort = true, 
+        dataFormatter = (v) => v, 
+        dataSuffix = '', 
+        chartColor = '#4CAF50',
+        showImage = true, 
+        title = '', 
+        subtitle = '' 
+    } = options;
 
     // Function to create a bar
     function createBar(justiceName, value) {
@@ -17,7 +27,9 @@ export function j1Chart(containerElement, options) {
             image.className = 'j1-circle-image';
             description.appendChild(image);
         }
-        description.appendChild(document.createTextNode(` ${justiceName}`));
+        const name = document.createElement('span');
+        name.innerHTML = justiceName;
+        description.appendChild(name);
 
         // Bar fill container
         const fillContainer = document.createElement('div');
@@ -42,6 +54,8 @@ export function j1Chart(containerElement, options) {
     // Clear existing bars
     containerElement.innerHTML = '';
 
+    containerElement.style.setProperty('--j1-chart-color', chartColor);
+
     // Create header
     if (title || subtitle) {
         const header = document.createElement('div');
@@ -65,9 +79,14 @@ export function j1Chart(containerElement, options) {
     }
 
     // Create bars
-    Object.entries(data)
-        .sort(([, valueA], [, valueB]) => valueB - valueA)
-        .forEach(([justiceName, value]) => createBar(justiceName, value));
+    if (sort) {
+        Object.entries(data)
+            .sort(([, valueA], [, valueB]) => valueB - valueA)
+            .forEach(([justiceName, value]) => createBar(justiceName, value));
+    } else {
+        Object.entries(data)
+            .forEach(([justiceName, value]) => createBar(justiceName, value));
+    }
 
     // Adjust labels and bar widths
     function adjustLabels() {

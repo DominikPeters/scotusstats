@@ -53,7 +53,7 @@ export default function opinionDelayScatterChart(element, hits) {
     echartsContainer(
         element,
         {
-            title: "How long after oral arguments are decisions issued?",
+            title: "How long after oral argument are decisions issued?",
             subtitle: "Number of days, by term.",
             height: `${terms.length * 50 + 100}px`,
             echartsOptions: {
@@ -90,7 +90,7 @@ export default function opinionDelayScatterChart(element, hits) {
                     type: 'scatter',
                     data: data,
                     symbolSize: function (val) {
-                        return val[2] * 50 / (maxFrequency + 1);
+                        return Math.pow(val[2], 0.75) * 80 / (maxFrequency + 1);
                     },
                 }],
                 animation: false,

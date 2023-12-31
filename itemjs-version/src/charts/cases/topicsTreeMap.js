@@ -20,6 +20,7 @@ export default function topicsTreeMapChart(element, hits) {
         lvl1 = lvl1.replace("federal or state regulation", "regulation");
         lvl1 = lvl1.replace("attorneys' and governmental employees' or officials' fees or compensation or licenses", "fees");
         lvl1 = lvl1.replace("federal pre-emption of state court jurisdiction", "state court jurisdiction");
+        lvl1 = lvl1.replace("statutory construction of criminal laws", "statutory construction");
 
         if (!lvl0Encountered[lvl0]) {
             lvl0Encountered[lvl0] = data.length;
@@ -46,13 +47,18 @@ export default function topicsTreeMapChart(element, hits) {
         element,
         {
             title: "Issues in cases before the Supreme Court",
-            subtitle: "Based on the coding by SCDB.",
+            subtitle: "Based on the <a href='http://www.supremecourtdatabase.org/documentation.php?var=issue'>coding by SCDB</a>.",
             height: `600px`,
             echartsOptions: {
+                tooltip: { trigger: 'item' },
                 series: [{
                     type: 'sunburst',
+                    nodeClick: false, // no data drill down
                     data: data,
                     radius: [0, '75%'],
+                    tooltip: {
+                        formatter: '{b}: {c} cases'
+                    },
                     // leafDepth: 1,
                     // label: {
                     //     show: true,

@@ -27,7 +27,7 @@ export function echartsContainer(containerElement, options) {
         if (subtitle) {
             const subtitleElement = document.createElement('p');
             subtitleElement.className = 'j1-chart-subtitle';
-            subtitleElement.textContent = subtitle;
+            subtitleElement.innerHTML = subtitle;
             header.appendChild(subtitleElement);
         }
 
@@ -60,7 +60,6 @@ export function echartsContainer(containerElement, options) {
             Object.values(allEcharts).forEach((chart) => showChartDom(chart, false));
             Object.values(allEcharts).forEach((chart) => chart.resize());
             Object.values(allEcharts).forEach((chart) => showChartDom(chart, true));
-            console.log(allEcharts);
         });
     }
 
