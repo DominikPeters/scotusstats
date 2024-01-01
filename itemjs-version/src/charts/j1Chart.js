@@ -135,7 +135,7 @@ export function j1Chart(containerElement, options) {
     // Create footer
     const footer = document.createElement('p');
     footer.className = 'j1-chart-footer';
-    footer.textContent = 'Chart: scotusstats.com';
+    footer.innerHTML = 'Chart: <a href="https://scotusstats.com/">scotusstats.com</a> ';
     containerElement.appendChild(footer);
 
     adjustLabels();

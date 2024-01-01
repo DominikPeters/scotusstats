@@ -5,7 +5,7 @@ body {
 
 .j1-chart-container {
     max-width: 100%;
-    padding: 20px;
+    padding: 15px 20px;
     border: 1px solid #ccc;
     margin-bottom: 10px;
 }
@@ -35,6 +35,23 @@ body {
     font-size: 14px;
     margin: 15px 0 0 0;
     color: #555;
+}
+
+.j1-chart-footer a {
+    color: #555;
+    text-decoration: none;
+}
+
+.j1-chart-footer a:hover {
+    text-decoration: underline;
+}
+
+.j1-chart-container .j1-embed-link-container {
+    display: none;
+}
+
+.j1-chart-container:hover .j1-embed-link-container {
+    display: inline;
 }
 
 .j1-bar {

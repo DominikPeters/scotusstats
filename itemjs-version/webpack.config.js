@@ -31,6 +31,7 @@ module.exports = {
         { from: 'src/data', to: 'data' },
         { from: 'src/styles', to: 'styles' },
         { from: 'src/img', to: 'img' },
+        { from: 'src/embed', to: 'embed' },
       ],
     }),
   ],
@@ -50,6 +51,10 @@ module.exports = {
       {
         directory: path.join(__dirname, 'src', 'img'),
         publicPath: '/img',
+      },
+      {
+        directory: path.join(__dirname, 'src', 'embed'),
+        publicPath: '/embed',
       },
     ],
     compress: true,

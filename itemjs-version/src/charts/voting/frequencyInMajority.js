@@ -1,5 +1,6 @@
 import { j1Chart } from "../j1Chart.js";
 import { justiceName } from "../../utils.js";
+import { getEmbedLink, getTermInfo } from "../chartFooter.js";
 
 export default function frequencyInMajorityChart(element, hits) {
     let voterData = {};
@@ -40,4 +41,11 @@ export default function frequencyInMajorityChart(element, hits) {
             showImage: true
         }
     );
+
+    const footer = element.querySelector('.j1-chart-footer');
+
+    footer.appendChild(getTermInfo());
+
+    const embedLink = getEmbedLink('frequencyInMajority');
+    footer.appendChild(embedLink);
 }
