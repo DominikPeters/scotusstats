@@ -66,7 +66,7 @@ export default function wordsSpokenOverTimeChart(element, hits) {
         {
             title: "How many words do justices speak during oral argument?",
             subtitle: `For each term, the average number of words spoken during an argument${getAmongCaveatString()}.`,
-            height: '500px', 
+            height: '500px',
             echartsOptions: {
                 tooltip: {},
                 xAxis: {
@@ -75,6 +75,14 @@ export default function wordsSpokenOverTimeChart(element, hits) {
                 },
                 yAxis: {
                     type: 'value',
+                    name: 'words',
+                    nameGap: 0,
+                    nameTextStyle: {
+                        verticalAlign: 'middle', 
+                        align: 'left',
+                        backgroundColor: 'white',
+                        padding: [0, 4, 0, -2],
+                    },
                 },
                 series: series,
                 animation: false,

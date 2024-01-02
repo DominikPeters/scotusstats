@@ -86,7 +86,10 @@ export default function frequencyInMajorityOverTimeChart(element, hits) {
                 yAxis: {
                     type: 'value',
                     min: minPercent,
-                    max: '100'
+                    max: '100',
+                    axisLabel: {
+                        formatter: '{value}%'
+                    }
                 },
                 series: series,
                 animation: false,

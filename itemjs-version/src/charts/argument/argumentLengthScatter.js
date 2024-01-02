@@ -66,7 +66,7 @@ export default function argumentLengthScatterChart(element, hits) {
                     formatter: function (params) {
                         let minsString = params.value[0] * 10 + '&ndash;' + (params.value[0] * 10 + 10) + ' minutes';
                         if (params.value[0] == (xAxisCap / 10) - 1) {
-                            minsString = `${xAxisCap-10}+ minutes`;
+                            minsString = `${xAxisCap - 10}+ minutes`;
                         }
                         return (
                             '<strong>' +
@@ -83,6 +83,13 @@ export default function argumentLengthScatterChart(element, hits) {
                 xAxis: {
                     type: 'category',
                     data: minsBuckets,
+                    name: 'minutes',
+                    nameGap: 0,
+                    nameTextStyle: {
+                        verticalAlign: 'bottom',
+                        align: 'right',
+                        lineHeight: '20'
+                    },
                 },
                 yAxis: {
                     type: 'category',

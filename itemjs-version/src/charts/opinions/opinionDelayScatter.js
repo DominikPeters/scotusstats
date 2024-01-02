@@ -81,6 +81,13 @@ export default function opinionDelayScatterChart(element, hits) {
                 xAxis: {
                     type: 'category',
                     data: dayBuckets,
+                    name: 'days',
+                    nameGap: 0,
+                    nameTextStyle: {
+                        verticalAlign: 'bottom',
+                        align: 'right',
+                        lineHeight: '20'
+                    },
                 },
                 yAxis: {
                     type: 'category',
