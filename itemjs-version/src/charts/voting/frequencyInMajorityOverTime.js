@@ -1,6 +1,7 @@
 import { echartsContainer } from "../echarts.js";
 import { justiceName } from "../../utils.js";
 import { getWhichCaveatString } from "../caveatGenerator.js";
+import { getEmbedLink } from "../chartFooter.js";
 
 export default function frequencyInMajorityOverTimeChart(element, hits) {
     let numInMajority = {};
@@ -99,4 +100,8 @@ export default function frequencyInMajorityOverTimeChart(element, hits) {
             }
         }
     );
+
+    const footer = element.querySelector('.j1-chart-footer');
+    const embedLink = getEmbedLink(element, 'frequencyInMajorityOverTime');
+    footer.appendChild(embedLink);
 }

@@ -1,5 +1,6 @@
 import { echartsContainer } from "../echarts.js";
 import { getAmongCaveatString } from "../caveatGenerator.js";
+import { getEmbedLink } from "../chartFooter.js";
 
 export default function opinionDelayScatterChart(element, hits) {
     let daysTaken = {};
@@ -104,4 +105,8 @@ export default function opinionDelayScatterChart(element, hits) {
             }
         }
     );
+
+    const footer = element.querySelector('.j1-chart-footer');
+    const embedLink = getEmbedLink(element, 'opinionDelayScatter');
+    footer.appendChild(embedLink);
 }

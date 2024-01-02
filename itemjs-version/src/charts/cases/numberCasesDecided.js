@@ -1,5 +1,6 @@
 import { j1Chart } from "../j1Chart.js";
 import { getCaveatString } from "../caveatGenerator.js";
+import { getEmbedLink } from "../chartFooter.js";
 
 export default function numberCasesDecidedChart(element, hits) {
     let data = {}
@@ -23,4 +24,8 @@ export default function numberCasesDecidedChart(element, hits) {
             showImage: false
         }
     );
+
+    const footer = element.querySelector('.j1-chart-footer');
+    const embedLink = getEmbedLink(element, 'numberCasesDecided');
+    footer.appendChild(embedLink);
 }

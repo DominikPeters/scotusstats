@@ -1,6 +1,7 @@
 import { echartsContainer } from "../echarts.js";
 import { justiceName, sum } from "../../utils.js";
 import { getAmongCaveatString } from "../caveatGenerator.js";
+import { getEmbedLink } from "../chartFooter.js";
 
 export default function wordsSpokenOverTimeChart(element, hits) {
     let wordsSpoken = {};
@@ -87,4 +88,8 @@ export default function wordsSpokenOverTimeChart(element, hits) {
             }
         }
     );
+
+    const footer = element.querySelector('.j1-chart-footer');
+    const embedLink = getEmbedLink(element, 'wordsSpokenOverTime');
+    footer.appendChild(embedLink);
 }

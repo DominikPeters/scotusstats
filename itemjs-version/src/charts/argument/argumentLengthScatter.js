@@ -1,5 +1,6 @@
 import { echartsContainer } from "../echarts.js";
 import { getAmongCaveatString } from "../caveatGenerator.js";
+import { getEmbedLink } from "../chartFooter.js";
 
 const xAxisCap = 270;
 
@@ -106,4 +107,8 @@ export default function argumentLengthScatterChart(element, hits) {
             }
         }
     );
+
+    const footer = element.querySelector('.j1-chart-footer');
+    const embedLink = getEmbedLink(element, 'argumentLengthScatter');
+    footer.appendChild(embedLink);
 }
