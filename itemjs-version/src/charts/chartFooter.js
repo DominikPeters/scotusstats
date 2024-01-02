@@ -1,3 +1,5 @@
+import { showEmbedModal } from './embedModal.js';
+
 function summarizeYears(years) {
     if (!years || years.length === 0) return '';
 
@@ -39,7 +41,7 @@ export function getTermInfo() {
     return span;
 }
 
-export function getEmbedLink(chartType) {
+export function getEmbedLink(chartContainer, chartType) {
     const filter = search.renderState.scotusstats.currentRefinements.items;
     const embedOptions = {
         filter: filter,
@@ -53,36 +55,11 @@ export function getEmbedLink(chartType) {
     const a = document.createElement('a');
     a.href = "#";
     a.className = "j1-embed-link";
-    a.textContent = "Embed this chart";
+    a.textContent = "Share";
 
     a.addEventListener('click', (e) => {
         e.preventDefault();
-        fetch('https://scotusstats.com/chart/register.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-                'filter': JSON.stringify(embedOptions),
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // should be "result" => "success", "id" => $id
-            if (data.result === "success") {
-                const embedLink = document.createElement('input');
-                embedLink.type = "text";
-                embedLink.value = `https://scotusstats.com/chart/${data.id}`;
-                embedLink.className = "embed-link-input";
-                a.parentNode.replaceChild(embedLink, a);
-                embedLink.select();
-                embedLink.addEventListener('blur', () => {
-                    embedLink.parentNode.replaceChild(a, embedLink);
-                });
-            } else {
-                console.error("Error registering embed:", data);
-            }
-        });
+        showEmbedModal(chartContainer, embedOptions);
     });
 
     span.appendChild(a);

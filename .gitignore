@@ -1,6 +1,8 @@
 *.json
 *.xml
 
+!package.json
+
 # Logs
 logs
 *.log

@@ -4,6 +4,7 @@ body {
 }
 
 .j1-chart-container {
+    position: relative;
     max-width: 100%;
     padding: 15px 20px;
     border: 1px solid #ccc;
@@ -52,6 +53,74 @@ body {
 
 .j1-chart-container:hover .j1-embed-link-container {
     display: inline;
+}
+
+.j1-embed-info-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.j1-embed-info-modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 15px;
+    padding-top: 0;
+    max-width: 100%;
+    width: 400px;
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+.j1-embed-info-modal-content p {
+    margin: 0;
+}
+
+.j1-embed-info-modal-content p.j1-share-instruction {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-size: 110%;
+}
+
+.j1-embed-info-modal-content p.j1-share-instruction svg {
+    margin-right: 1px;
+}
+
+.j1-embed-info-modal-content a {
+    color: #222;
+    text-decoration: none;
+}
+
+.j1-embed-info-modal-content a:hover {
+    text-decoration: underline;
+}
+
+.j1-embed-info-modal-content code {
+    display: block;
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 90%;
+    word-break: break-all;
+    user-select: all;
+}
+
+.j1-embed-info-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    color: #444;
+}
+
+.j1-embed-info-close:hover {
+    color: black;
+    transform: scale(1.2);
 }
 
 .j1-bar {

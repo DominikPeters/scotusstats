@@ -1,0 +1,26 @@
+{
+  "name": "scotusstats",
+  "version": "1.0.0",
+  "description": "Interactive chart generator for supreme court statistics",
+  "scripts": {
+    "start": "webpack-dev-server --mode development",
+    "build": "webpack --mode production"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.0",
+    "@babel/preset-env": "^7.18.0",
+    "babel-loader": "^8.2.5",
+    "copy-webpack-plugin": "^11.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.9.1"
+  },
+  "dependencies": {
+    "apexcharts": "^3.45.1",
+    "dom-to-svg": "^0.12.2",
+    "echarts": "^5.4.3",
+    "instantsearch-itemsjs-adapter": "^1.0.0",
+    "instantsearch.js": "^4.39.0"
+  }
+}
