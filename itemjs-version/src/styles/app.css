@@ -35,8 +35,41 @@
   flex: 1;
 }
 
-@media (max-width: 600px) {
+#close-menu-button {
+  display: none;
+}
+
+@media (max-width: 640px) {
   .search-panel__filters {
+    display: none;
+  }
+
+  .show-menu .search-panel__filters {
+    display: block;
+    font-size: 115%;
+  }
+
+  .show-menu .search-panel__results {
+    display: none;
+  }
+
+  #hamburger-button {
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  #close-menu-button {
+    display: block;
+    cursor: pointer;
+    position: fixed;
+    top: 55px;
+    right: 10px;
+  }
+  
+}
+
+@media screen and (min-width: 640px) {
+  #hamburger-button {
     display: none;
   }
 }
@@ -87,10 +120,17 @@
   margin-bottom: 0.5rem;
 }
 
+.ais-CurrentRefinements-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+}
+
 .ais-CurrentRefinements-item {
   background: transparent;
   border: none;
   padding: 0;
+  padding-right: 0.3rem;
 }
 
 .ais-CurrentRefinements-category {

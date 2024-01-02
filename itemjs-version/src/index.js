@@ -3,10 +3,10 @@ import instantsearch from 'instantsearch.js';
 import { searchBox, hits, pagination, configure, panel, refinementList, hierarchicalMenu, currentRefinements } from 'instantsearch.js/es/widgets';
 import { hitListItemTemplate } from './hitList.js';
 import { buildCharts } from './buildCharts.js';
-import { unflattenHits } from './utils.js';
+import { unflattenHits, justiceName } from './utils.js';
 
 const options = {
-  searchableFields: ["name"],
+  // searchableFields: ["name"], // not doing search
   query: "",
   aggregations: {
     term: {
@@ -45,7 +45,7 @@ const options = {
     },
     flags: {
       title: "Flags",
-      size: 10
+      size: 10,
     },
     "decision.type": {
       title: "Decision",
@@ -58,11 +58,11 @@ const options = {
       conjunction: false
     },
     "decision.majorityVoters": {
-      title: "decision.majorityVoters",
+      title: "In majority",
       size: 10
     },
     "decision.minorityVoters": {
-      title: "decision.minorityVoters",
+      title: "In minority",
       size: 10
     }
   },
@@ -78,7 +78,6 @@ const options = {
   }
 };
 
-
 fetch("/data/flattened_records.json")
   .then(response => response.json())
   .then(data => {
@@ -91,6 +90,7 @@ fetch("/data/flattened_records.json")
 let search;
 
 function buildSearch(data) {
+  setUpMobileMenu();
   // console.log(data);
 
   const index = createIndex(data, options);
@@ -163,10 +163,22 @@ function buildSearch(data) {
       attributes: ['legalProvision.lvl0', 'legalProvision.lvl1', 'legalProvision.lvl2'],
     }),
     panel({
-      templates: { header: () => 'Flags' },
+      templates: { header: () => 'Features' },
     })(refinementList)({
       container: '#flags-refinement',
       attribute: 'flags',
+      // rename values "declaration-unconstitutional", "precedent-alteration"
+      // to "declaration of unconstitutionality", "alteration of precedent"
+      transformItems(items) {
+        for (const item of items) {
+          if (item.value === "declaration-unconstitutional") {
+            item.highlighted = "found unconstitutional";
+          } else if (item.value === "precedent-alteration") {
+            item.highlighted = "alteration of precedent";
+          }
+        }
+        return items;
+      }
     }),
     panel({
       templates: { header: () => 'Decision' },
@@ -194,6 +206,21 @@ function buildSearch(data) {
       transformItems(items) {
         for (const item of items) {
           item.label = options.aggregations[item.attribute].title;
+          if (item.attribute == "flags") {
+            for (const ref of item.refinements) {
+              if (ref.value === "declaration-unconstitutional") {
+                ref.label = "found unconstitutional";
+              } else if (ref.value === "precedent-alteration") {
+                ref.label = "alteration of precedent";
+              }
+            }
+          }
+          // replace justice long with short names
+          if (["decision.majorityVoters", "decision.minorityVoters", "decision.majorityWriter"].includes(item.attribute)) {
+            for (const ref of item.refinements) {
+              ref.label = justiceName(ref.value);
+            }
+          }
         }
         return items;
       }
@@ -210,16 +237,48 @@ function buildSearch(data) {
   search.on('render', updateDisplays);
 }
 
-function updateDisplays() {
+let renderedHits = "";
+
+function updateDisplays(forceUpdate=false) {
+  const mobileMenuOpen = document.querySelector(".search-panel").classList.contains("show-menu");
+  if (mobileMenuOpen) {
+    return; // can't see charts
+  }
   let flatHits, hits;
   try {
     flatHits = search.renderState.scotusstats.hits.hits;
-    // facets = search.renderState.scotusstats.hits.results.facets;
   } catch (e) {
     // no results currently
     console.error(e);
     return;
   }
+  if (search.renderState.scotusstats.hits.results === undefined) {
+    return;
+  }
+  const hitString = JSON.stringify(flatHits.map(hit => hit.objectID));
+  if (hitString === renderedHits && !forceUpdate) {
+    return; // avoid re-rendering
+  }
   hits = unflattenHits(flatHits);
   buildCharts(hits);
+  renderedHits = hitString;
+}
+
+
+function setUpMobileMenu() {
+  const searchPanel = document.querySelector(".search-panel");
+  function toggleMenu() {
+    console.log("toggle menu");
+    if (searchPanel.classList.contains("show-menu")) {
+      searchPanel.classList.remove("show-menu");
+      // await render, then update displays
+      setTimeout(() => updateDisplays(true), 1);
+    } else {
+      searchPanel.classList.add("show-menu");
+    }
+  }
+  const hamburger = document.getElementById("hamburger-button");
+  const closeMenuButton = document.getElementById("close-menu-button");
+  hamburger.onclick = toggleMenu;
+  closeMenuButton.onclick = toggleMenu;
 }
