@@ -107,7 +107,7 @@ if ($embed_mode) {
 <?php
 } else {
     if ($echarts_used) {
-        echo '    <script src="charts/echarts.min.js"></script>\m';
+        echo '    <script src="charts/echarts.min.js"></script>\n';
     }
 ?>
     <link rel="stylesheet" href="../styles/j1-chart.css">   

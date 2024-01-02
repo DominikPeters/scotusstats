@@ -48,7 +48,7 @@ export function j1Chart(containerElement, options) {
         fillContainer.appendChild(label);
         bar.appendChild(description);
         bar.appendChild(fillContainer);
-        containerElement.appendChild(bar);
+        contentElement.appendChild(bar);
     }
 
     // Clear existing bars
@@ -56,13 +56,17 @@ export function j1Chart(containerElement, options) {
 
     containerElement.style.setProperty('--j1-chart-color', chartColor);
 
+    const contentElement = document.createElement('div');
+    contentElement.className = 'j1-chart-content';
+    containerElement.appendChild(contentElement);
+
     // Create header
     if (title || subtitle) {
         const header = document.createElement('div');
         header.className = 'j1-chart-header';
 
         if (title) {
-            const titleElement = document.createElement('h2');
+            const titleElement = document.createElement('h3');
             titleElement.className = 'j1-chart-title';
             titleElement.textContent = title;
             header.appendChild(titleElement);
@@ -75,7 +79,7 @@ export function j1Chart(containerElement, options) {
             header.appendChild(subtitleElement);
         }
 
-        containerElement.appendChild(header);
+        contentElement.appendChild(header);
     }
 
     // Create bars
@@ -136,7 +140,7 @@ export function j1Chart(containerElement, options) {
     const footer = document.createElement('p');
     footer.className = 'j1-chart-footer';
     footer.innerHTML = 'Chart: <a href="https://scotusstats.com/">scotusstats.com</a> ';
-    containerElement.appendChild(footer);
+    contentElement.appendChild(footer);
 
     adjustLabels();
 

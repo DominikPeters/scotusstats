@@ -6,9 +6,12 @@ body {
 .j1-chart-container {
     position: relative;
     max-width: 100%;
-    padding: 15px 20px;
     border: 1px solid #ccc;
     margin-bottom: 10px;
+}
+
+.j1-chart-content {
+    padding: 15px 20px;
 }
 
 .j1-chart-header {
@@ -108,6 +111,10 @@ body {
     font-size: 90%;
     word-break: break-all;
     user-select: all;
+}
+
+.j1-download-buttons-area button {
+    margin-right: 5px;
 }
 
 .j1-embed-info-close {

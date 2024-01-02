@@ -11,6 +11,9 @@ export function echartsContainer(containerElement, options) {
     }
     containerElement.innerHTML = '';
     
+    const contentElement = document.createElement('div');
+    contentElement.className = 'j1-chart-content';
+    containerElement.appendChild(contentElement);
 
     // Create header
     if (title || subtitle) {
@@ -18,7 +21,7 @@ export function echartsContainer(containerElement, options) {
         header.className = 'j1-chart-header';
 
         if (title) {
-            const titleElement = document.createElement('h2');
+            const titleElement = document.createElement('h3');
             titleElement.className = 'j1-chart-title';
             titleElement.textContent = title;
             header.appendChild(titleElement);
@@ -31,11 +34,11 @@ export function echartsContainer(containerElement, options) {
             header.appendChild(subtitleElement);
         }
 
-        containerElement.appendChild(header);
+        contentElement.appendChild(header);
     }
 
     const chartElement = document.createElement('div');
-    containerElement.appendChild(chartElement);
+    contentElement.appendChild(chartElement);
     chartElement.style.width = "100%";
     chartElement.style.height = height;
     
@@ -46,7 +49,7 @@ export function echartsContainer(containerElement, options) {
     const footer = document.createElement('p');
     footer.className = 'j1-chart-footer';
     footer.textContent = 'Chart: scotusstats.com';
-    containerElement.appendChild(footer);
+    contentElement.appendChild(footer);
 
     // workaround a bug where only one of the charts will resize, so do one resize for all charts
     // https://github.com/apache/echarts/issues/13004

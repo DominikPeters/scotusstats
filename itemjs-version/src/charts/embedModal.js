@@ -1,4 +1,4 @@
-import { elementToSVG, inlineResources } from 'dom-to-svg'
+import domtoimage from 'dom-to-image';
 
 function getInnerHTML(chartContainer, chartId) {
     return `<p class="j1-share-instruction">
@@ -27,8 +27,7 @@ function getInnerHTML(chartContainer, chartId) {
         </svg>
         <strong>Download this chart</strong>:
     </p>
-    <p>
-        <button class="j1-download-svg-button">Download SVG</button>
+    <p class="j1-download-buttons-area">
     </p>
     `;
 }
@@ -41,9 +40,13 @@ export function showEmbedModal(chartContainer, embedOptions) {
     embedInfoModal.appendChild(embedInfoModalContent);
     chartContainer.appendChild(embedInfoModal);
 
+    // hide embed link
+    const embedLink = chartContainer.querySelector('.j1-embed-link-container');
+    embedLink.style.display = "none";
 
     // close modal
     function closeEmbedModal() {
+        embedLink.style.display = "";
         if (embedInfoModal.parentNode) {
             embedInfoModal.parentNode.removeChild(embedInfoModal);
         }
@@ -64,8 +67,10 @@ export function showEmbedModal(chartContainer, embedOptions) {
     // modal text
     const embedInfoModalText = document.createElement('div');
     embedInfoModalContent.appendChild(embedInfoModalText);
-    embedInfoModalContent.style.display = "none";
+    // embedInfoModalContent.style.display = "none";
     embedInfoModalText.innerHTML = "";
+    embedInfoModalText.innerHTML = getInnerHTML(chartContainer, "loading");
+    addImageDownloadButtons();
 
     // after 300ms timeout, write "Loading..." if no text has been written yet
     setTimeout(() => {
@@ -75,51 +80,64 @@ export function showEmbedModal(chartContainer, embedOptions) {
         }
     }, 300);
 
-
-    function addSVGDownloadButton() {
-        const downloadSVGButton = embedInfoModalText.querySelector('.j1-download-svg-button');
+    function addImageDownloadButtons() {
+        const downloadButtonsArea = embedInfoModalText.querySelector('.j1-download-buttons-area');
+        const contentElement = chartContainer.querySelector('.j1-chart-content');
+        const downloadSVGButton = document.createElement('button');
+        downloadSVGButton.textContent = "Download SVG";
         downloadSVGButton.addEventListener('click', async () => {
-            const svg = elementToSVG(chartContainer);
-            await inlineResources(svg);
-            // remove element with id j1-embed-info-modal1 from svg
-            const embedInfoModal1 = svg.querySelector('#j1-embed-info-modal1');
-            if (embedInfoModal1) {
-                embedInfoModal1.parentNode.removeChild(embedInfoModal1);
-            }
-            // remove element j1-embed-link-container1
-            const embedLinkContainer1 = svg.querySelector('#j1-embed-link-container1');
-            if (embedLinkContainer1) {
-                embedLinkContainer1.parentNode.removeChild(embedLinkContainer1);
-            }
-            const svgData = new XMLSerializer().serializeToString(svg);
-            const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+            const svgDataUrl = await domtoimage.toSvg(contentElement);
+            const svgBlob = await (await fetch(svgDataUrl)).blob();
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement('a');
             downloadLink.href = svgUrl;
-            downloadLink.download = "chart.svg";
+            downloadLink.download = chartContainer.id + ".svg";
             downloadLink.click();
+            URL.revokeObjectURL(svgUrl);
         });
+        downloadButtonsArea.appendChild(downloadSVGButton);
+        const downloadPNGButton = document.createElement('button');
+        downloadPNGButton.textContent = "Download PNG";
+        downloadPNGButton.addEventListener('click', async () => {
+            const scale = 4;
+            const pngBlob = await domtoimage.toBlob(contentElement, {
+                width: contentElement.clientWidth * scale,
+                height: contentElement.clientHeight * scale,
+                style: {
+                    transform: "scale(" + scale + ")",
+                    transformOrigin: "top left",
+                    background: "white"
+                }
+                });
+            const pngUrl = URL.createObjectURL(pngBlob);
+            const downloadLink = document.createElement('a');
+            downloadLink.href = pngUrl;
+            downloadLink.download = chartContainer.id + ".png";
+            downloadLink.click();
+            URL.revokeObjectURL(pngUrl);
+        });
+        downloadButtonsArea.appendChild(downloadPNGButton);
     }
 
-    fetch('https://scotusstats.com/chart/register.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams({
-            'filter': JSON.stringify(embedOptions),
-        })
-    })
-        .then(response => response.json())
-        .then(data => {
-            // should be "result" => "success", "id" => $id
-            if (data.result === "success") {
-                const chartId = data.id;
-                embedInfoModalText.innerHTML = getInnerHTML(chartContainer, chartId);
-                embedInfoModalContent.style.display = "";
-                addSVGDownloadButton();
-            } else {
-                console.error("Error registering embed:", data);
-            }
-        });
+    // fetch('https://scotusstats.com/chart/register.php', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/x-www-form-urlencoded'
+    //     },
+    //     body: new URLSearchParams({
+    //         'filter': JSON.stringify(embedOptions),
+    //     })
+    // })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         // should be "result" => "success", "id" => $id
+    //         if (data.result === "success") {
+    //             const chartId = data.id;
+    //             embedInfoModalText.innerHTML = getInnerHTML(chartContainer, chartId);
+    //             embedInfoModalContent.style.display = "";
+    //             addSVGDownloadButton();
+    //         } else {
+    //             console.error("Error registering embed:", data);
+    //         }
+    //     });
 }
