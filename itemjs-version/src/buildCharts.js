@@ -1,6 +1,7 @@
 import frequencyInMajorityChart from './charts/voting/frequencyInMajority.js';
 import frequencyInMajorityOverTimeChart from './charts/voting/frequencyInMajorityOverTime.js';
 import agreementPairsChart from './charts/voting/agreementPairs.js';
+import disagreementPairsChart from './charts/voting/disagreementPairs.js';
 import agreementTriplesChart from './charts/voting/agreementTriples.js';
 
 import fractionWordsChart from './charts/argument/fractionWords.js';
@@ -36,8 +37,8 @@ export function buildCharts(hits) {
 
     buildChart(frequencyInMajorityChart, "frequency-in-majority-chart", chartsContainer, hits);
     buildChart(frequencyInMajorityOverTimeChart, "frequency-in-majority-over-time-chart", chartsContainer, hits);
-    buildChart(agreementPairsChart(true), "agreement-pairs-chart", chartsContainer, hits);
-    buildChart(agreementPairsChart(false), "disagreement-pairs-chart", chartsContainer, hits);
+    buildChart(agreementPairsChart, "agreement-pairs-chart", chartsContainer, hits);
+    buildChart(disagreementPairsChart, "disagreement-pairs-chart", chartsContainer, hits);
     buildChart(agreementTriplesChart, "agreement-triples-chart", chartsContainer, hits);
 
     // argument charts
