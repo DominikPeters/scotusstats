@@ -46,6 +46,8 @@ export function getEmbedLink(chartContainer, chartType) {
     const embedOptions = {
         filter: filter,
         chartType: chartType,
+        chartTitle: chartContainer.querySelector('.j1-chart-title').textContent,
+        chartSubtitle: chartContainer.querySelector('.j1-chart-subtitle').textContent,
     };
 
     const span = document.createElement('span');

@@ -22,7 +22,7 @@ export function j1Chart(containerElement, options) {
         description.className = 'j1-bar-description';
         if (showImage) {
             const image = document.createElement('img');
-            image.src = `img/justices/${justiceName}.png`; // Assuming image naming convention
+            image.src = `/img/justices/${justiceName}.png`; // Assuming image naming convention
             image.alt = 'Picture of Justice ' + justiceName;
             image.className = 'j1-circle-image';
             description.appendChild(image);

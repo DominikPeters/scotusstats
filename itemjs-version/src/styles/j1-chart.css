@@ -189,7 +189,10 @@ body {
     align-items: center;
 }
 
-.j1-justice-pair img:first-child, .j1-justice-triple img:first-child, .j1-justice-triple img:nth-child(2) {
+.j1-justice-pair img, .j1-justice-triple img {
     margin-right: -3px;
 }
 
+.j1-group-members-text {
+    margin-left: 9px;
+}

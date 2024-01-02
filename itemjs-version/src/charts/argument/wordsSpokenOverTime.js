@@ -75,7 +75,7 @@ export default function wordsSpokenOverTimeChart(element, hits) {
                 },
                 yAxis: {
                     type: 'value',
-                    name: 'words',
+                    name: 'words per argument',
                     nameGap: 0,
                     nameTextStyle: {
                         verticalAlign: 'middle', 
