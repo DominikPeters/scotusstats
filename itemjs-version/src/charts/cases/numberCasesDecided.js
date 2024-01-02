@@ -1,4 +1,5 @@
 import { j1Chart } from "../j1Chart.js";
+import { getCaveatString } from "../caveatGenerator.js";
 
 export default function numberCasesDecidedChart(element, hits) {
     let data = {}
@@ -17,7 +18,7 @@ export default function numberCasesDecidedChart(element, hits) {
         {
             data: data,
             title: "How many cases did the Supreme Court decide?",
-            subtitle: "Number of cases with opinions, by term.",
+            subtitle: `Number of cases${getCaveatString()} with opinions, by term.`,
             sort: false,
             showImage: false
         }

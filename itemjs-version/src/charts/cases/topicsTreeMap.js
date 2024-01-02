@@ -1,4 +1,6 @@
 import { echartsContainer } from "../echarts.js";
+import { getEmbedLink, getTermInfo } from "../chartFooter.js";
+import { getAmongCaveatString } from "../caveatGenerator.js";
 
 export default function topicsTreeMapChart(element, hits) {
     let lvl0Encountered = {}; // value = index in data array
@@ -47,7 +49,7 @@ export default function topicsTreeMapChart(element, hits) {
         element,
         {
             title: "Issues in cases before the Supreme Court",
-            subtitle: "Based on the <a href='http://www.supremecourtdatabase.org/documentation.php?var=issue'>coding by SCDB</a>.",
+            subtitle: `Based on the <a href='http://www.supremecourtdatabase.org/documentation.php?var=issue'>coding by SCDB</a>${getAmongCaveatString()}.`,
             height: `600px`,
             echartsOptions: {
                 tooltip: { trigger: 'item' },
@@ -102,4 +104,11 @@ export default function topicsTreeMapChart(element, hits) {
             }
         }
     );
+
+    const footer = element.querySelector('.j1-chart-footer');
+
+    footer.appendChild(getTermInfo());
+
+    const embedLink = getEmbedLink('frequencyInMajority');
+    footer.appendChild(embedLink);
 }

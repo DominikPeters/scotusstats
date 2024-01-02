@@ -1,5 +1,7 @@
 import { j1Chart } from "../j1Chart.js";
 import { justiceName } from "../../utils.js";
+import { getAmongCaveatString } from "../caveatGenerator.js";
+import { getEmbedLink, getTermInfo } from "../chartFooter.js";
 
 export default function numberMajorityOpinionsWrittenChart(element, hits) {
     let data = {}
@@ -16,8 +18,15 @@ export default function numberMajorityOpinionsWrittenChart(element, hits) {
         {
             data: data,
             title: "How many majority opinions did each justice write?",
-            subtitle: "Number of Opinions of the Court written by each justice.",
+            subtitle: `Number of Opinions of the Court written by each justice${getAmongCaveatString()}.`,
             showImage: true
         }
     );
+
+    const footer = element.querySelector('.j1-chart-footer');
+
+    footer.appendChild(getTermInfo());
+
+    const embedLink = getEmbedLink('frequencyInMajority');
+    footer.appendChild(embedLink);
 }

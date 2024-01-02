@@ -1,5 +1,6 @@
 import { echartsContainer } from "../echarts.js";
 import { justiceName, sum } from "../../utils.js";
+import { getAmongCaveatString } from "../caveatGenerator.js";
 
 export default function wordsSpokenOverTimeChart(element, hits) {
     let wordsSpoken = {};
@@ -63,7 +64,7 @@ export default function wordsSpokenOverTimeChart(element, hits) {
         element,
         {
             title: "How many words do justices speak during oral argument?",
-            subtitle: "For each term, the average number of words spoken during an argument.",
+            subtitle: `For each term, the average number of words spoken during an argument${getAmongCaveatString()}.`,
             height: '500px', 
             echartsOptions: {
                 tooltip: {},

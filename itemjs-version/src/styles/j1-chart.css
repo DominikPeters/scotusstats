@@ -73,6 +73,7 @@ body {
     height: 30px;
     position: relative;
     background-color: #f0f0f0;
+    overflow: hidden;
 }
 
 .j1-bar-fill {

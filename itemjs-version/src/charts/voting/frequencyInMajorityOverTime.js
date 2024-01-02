@@ -1,5 +1,6 @@
 import { echartsContainer } from "../echarts.js";
 import { justiceName } from "../../utils.js";
+import { getWhichCaveatString } from "../caveatGenerator.js";
 
 export default function frequencyInMajorityOverTimeChart(element, hits) {
     let numInMajority = {};
@@ -49,7 +50,7 @@ export default function frequencyInMajorityOverTimeChart(element, hits) {
         }
     }
     // round down to nearest 10
-    minPercent = Math.max(10, Math.floor((minPercent - 5) / 10) * 10);
+    minPercent = Math.max(0, Math.floor((minPercent - 5) / 10) * 10);
 
     let series = [];
     for (const [justice, data] of Object.entries(voterData)) {
@@ -74,7 +75,7 @@ export default function frequencyInMajorityOverTimeChart(element, hits) {
         element,
         {
             title: "How often is each justice in the majority over time?",
-            subtitle: "Fraction of cases in which the justice voted with the majority, among cases in which the justice participated.",
+            subtitle: `Fraction of cases in which the justice voted with the majority, among cases in which the justice participated${getWhichCaveatString()}.`,
             echartsOptions: {
                 tooltip: {},
                 xAxis: {

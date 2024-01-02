@@ -1,5 +1,5 @@
 import { echartsContainer } from "../echarts.js";
-import { justiceName } from "../../utils.js";
+import { getAmongCaveatString } from "../caveatGenerator.js";
 
 export default function opinionDelayScatterChart(element, hits) {
     let daysTaken = {};
@@ -54,7 +54,7 @@ export default function opinionDelayScatterChart(element, hits) {
         element,
         {
             title: "How long after oral argument are decisions issued?",
-            subtitle: "Number of days, by term.",
+            subtitle: `Number of days, by term${getAmongCaveatString()}.`,
             height: `${terms.length * 50 + 100}px`,
             echartsOptions: {
                 tooltip: {

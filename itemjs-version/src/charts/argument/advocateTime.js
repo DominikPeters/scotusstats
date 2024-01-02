@@ -1,4 +1,6 @@
 import { j1Chart } from '../j1Chart.js';
+import { getAmongCaveatString } from "../caveatGenerator.js";
+import { getEmbedLink, getTermInfo } from "../chartFooter.js";
 
 export default function advocateTimeChart(element, hits) {
     let advocateTime = {};
@@ -24,10 +26,17 @@ export default function advocateTimeChart(element, hits) {
       {
         data: top20AdvocateTimes,
         title: "Longest total argument time by advocate",
-        subtitle: "Top 20 advocates, summing across all their arguments.",
-        dataFormatter: (value) => value > 60 ? `${(value / 60).toFixed(0)}:${(value % 60).toString().padStart(2, '0')} hours` : `${value} m`,
+        subtitle: `Top 20 advocates, summing across all their arguments${getAmongCaveatString()}.`,
+        dataFormatter: (value) => value > 60 ? `${(value / 60).toFixed(0)}:${(value % 60).toString().padStart(2, '0')} h` : `${value} m`,
         maxDataValue: maxTime,
         showImage: false,
       }
     );
+
+    const footer = element.querySelector('.j1-chart-footer');
+
+    footer.appendChild(getTermInfo());
+
+    const embedLink = getEmbedLink('frequencyInMajority');
+    footer.appendChild(embedLink);
 }

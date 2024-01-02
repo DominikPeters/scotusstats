@@ -1,4 +1,5 @@
 import { echartsContainer } from "../echarts.js";
+import { getAmongCaveatString } from "../caveatGenerator.js";
 
 const xAxisCap = 270;
 
@@ -55,7 +56,7 @@ export default function argumentLengthScatterChart(element, hits) {
         element,
         {
             title: "How long do oral arguments last?",
-            subtitle: "Total length in minutes, by term.",
+            subtitle: `Total length in minutes, by term${getAmongCaveatString()}.`,
             height: `${terms.length * 50 + 100}px`,
             echartsOptions: {
                 tooltip: {

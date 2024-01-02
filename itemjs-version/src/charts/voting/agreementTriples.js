@@ -1,5 +1,7 @@
 import { j1Chart } from "../j1Chart.js";
 import { justiceName } from "../../utils.js";
+import { getWhichCaveatString } from "../caveatGenerator.js";
+import { getEmbedLink, getTermInfo } from "../chartFooter.js";
 
 export default function agreementTriplesChart(element, hits) {
     let justices = {};
@@ -76,10 +78,17 @@ export default function agreementTriplesChart(element, hits) {
         {
             data: topTriplesData,
             title: "Which triples of justices agree most frequently?",
-            subtitle: `Fraction of cases in which 3 justices voted together, among cases in which all participated. (The "3-3-3" court?)`,
+            subtitle: `Fraction of cases in which 3 justices voted together, among cases in which all participated${getWhichCaveatString()}. (The "3-3-3" court?)`,
             dataSuffix: '%',
             maxDataValue: 100,
             showImage: false
         }
     );
+
+    const footer = element.querySelector('.j1-chart-footer');
+
+    footer.appendChild(getTermInfo());
+
+    const embedLink = getEmbedLink('frequencyInMajority');
+    footer.appendChild(embedLink);
 }

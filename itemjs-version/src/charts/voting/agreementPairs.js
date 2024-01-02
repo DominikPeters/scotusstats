@@ -1,5 +1,7 @@
 import { j1Chart } from "../j1Chart.js";
 import { justiceName } from "../../utils.js";
+import { getWhichCaveatString } from "../caveatGenerator.js";
+import { getEmbedLink, getTermInfo } from "../chartFooter.js";
 
 export default function agreementPairsChart(agree) {
     return function(element, hits) {
@@ -75,12 +77,19 @@ export default function agreementPairsChart(agree) {
             {
                 data: topPairData,
                 title: agree ? "Which pairs of justices agree most frequently?" : "Which pairs of justices agree least frequently?",
-                subtitle: "Fraction of cases in which the two justices voted together, among cases in which both participated.",
+                subtitle: `Fraction of cases in which the two justices voted together, among cases in which both participated${getWhichCaveatString()}.`,
                 dataSuffix: '%',
                 chartColor: agree ? '#4CAF50' : '#ab2d24',
                 maxDataValue: 100,
                 showImage: false
             }
         );
+
+        const footer = element.querySelector('.j1-chart-footer');
+
+        footer.appendChild(getTermInfo());
+
+        const embedLink = getEmbedLink('frequencyInMajority');
+        footer.appendChild(embedLink);
     };
 }

@@ -1,6 +1,7 @@
 import { j1Chart } from "../j1Chart.js";
 import { justiceName } from "../../utils.js";
 import { getEmbedLink, getTermInfo } from "../chartFooter.js";
+import { getWhichCaveatString } from "../caveatGenerator.js";
 
 export default function frequencyInMajorityChart(element, hits) {
     let voterData = {};
@@ -30,12 +31,15 @@ export default function frequencyInMajorityChart(element, hits) {
         voterData[justiceName(justice)] = (num / numParticipated[justice] * 100).toFixed(1);
     }
 
+    let subtitle = `Fraction of cases in which the justice voted with the majority, 
+    among cases in which the justice participated${getWhichCaveatString()}.`;
+
     j1Chart(
         element,
         {
             data: voterData,
             title: "How often is each justice in the majority?",
-            subtitle: "Fraction of cases in which the justice voted with the majority, among cases in which the justice participated.",
+            subtitle: subtitle,
             dataSuffix: '%',
             maxDataValue: 100,
             showImage: true

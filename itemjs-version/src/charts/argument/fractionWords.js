@@ -1,5 +1,7 @@
 import { j1Chart } from '../j1Chart.js';
 import { sum, justiceName } from '../../utils.js';
+import { getWhichCaveatString } from "../caveatGenerator.js";
+import { getEmbedLink, getTermInfo } from "../chartFooter.js";
 
 export default function fractionWordsChart(element, hits) {
     // oral argument words chart
@@ -34,10 +36,17 @@ export default function fractionWordsChart(element, hits) {
       {
         data: avgWordFractions,
         title: "How much does each justice speak during oral argument?",
-        subtitle: "Fraction of words spoken by the justice during an average oral argument in which they participated.",
+        subtitle: `Fraction of words spoken by the justice during an average oral argument in which they participated${getWhichCaveatString()}.`,
         dataSuffix: '%',
         maxDataValue: Math.max(30, Math.max(...Object.values(avgWordFractions)) + 10),
         showImage: true
       }
     );
+
+    const footer = element.querySelector('.j1-chart-footer');
+
+    footer.appendChild(getTermInfo());
+
+    const embedLink = getEmbedLink('frequencyInMajority');
+    footer.appendChild(embedLink);
 }
