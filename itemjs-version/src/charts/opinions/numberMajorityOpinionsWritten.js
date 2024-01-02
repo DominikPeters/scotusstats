@@ -27,6 +27,6 @@ export default function numberMajorityOpinionsWrittenChart(element, hits) {
 
     footer.appendChild(getTermInfo());
 
-    const embedLink = getEmbedLink('frequencyInMajority');
+    const embedLink = getEmbedLink(element, 'numberMajorityOpinionsWritten');
     footer.appendChild(embedLink);
 }

@@ -47,6 +47,6 @@ export default function fractionWordsChart(element, hits) {
 
     footer.appendChild(getTermInfo());
 
-    const embedLink = getEmbedLink('frequencyInMajority');
+    const embedLink = getEmbedLink(element, 'fractionWords');
     footer.appendChild(embedLink);
 }

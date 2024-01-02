@@ -109,6 +109,6 @@ export default function topicsTreeMapChart(element, hits) {
 
     footer.appendChild(getTermInfo());
 
-    const embedLink = getEmbedLink('frequencyInMajority');
+    const embedLink = getEmbedLink(element, 'topicsTreeMap');
     footer.appendChild(embedLink);
 }

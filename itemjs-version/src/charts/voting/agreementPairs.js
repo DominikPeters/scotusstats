@@ -89,7 +89,7 @@ export default function agreementPairsChart(agree) {
 
         footer.appendChild(getTermInfo());
 
-        const embedLink = getEmbedLink('frequencyInMajority');
+        const embedLink = getEmbedLink(element, 'agreementPairs');
         footer.appendChild(embedLink);
     };
 }

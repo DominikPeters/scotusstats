@@ -50,6 +50,6 @@ export default function frequencyInMajorityChart(element, hits) {
 
     footer.appendChild(getTermInfo());
 
-    const embedLink = getEmbedLink('frequencyInMajority');
+    const embedLink = getEmbedLink(element, 'frequencyInMajority');
     footer.appendChild(embedLink);
 }

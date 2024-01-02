@@ -37,6 +37,6 @@ export default function advocateTimeChart(element, hits) {
 
     footer.appendChild(getTermInfo());
 
-    const embedLink = getEmbedLink('frequencyInMajority');
+    const embedLink = getEmbedLink(element, 'advocateTime');
     footer.appendChild(embedLink);
 }

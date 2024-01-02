@@ -18,7 +18,7 @@ export default function numberCasesDecidedChart(element, hits) {
         {
             data: data,
             title: "How many cases did the Supreme Court decide?",
-            subtitle: `Number of cases${getCaveatString()} with opinions, by term.`,
+            subtitle: `Number of cases${getCaveatString()}, by term.`,
             sort: false,
             showImage: false
         }

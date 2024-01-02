@@ -89,6 +89,6 @@ export default function agreementTriplesChart(element, hits) {
 
     footer.appendChild(getTermInfo());
 
-    const embedLink = getEmbedLink('frequencyInMajority');
+    const embedLink = getEmbedLink(element, 'agreementTriples');
     footer.appendChild(embedLink);
 }
