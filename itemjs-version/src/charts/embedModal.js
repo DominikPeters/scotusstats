@@ -64,47 +64,60 @@ export function showEmbedModal(chartContainer, embedOptions) {
     // modal text
     const embedInfoModalText = document.createElement('div');
     embedInfoModalContent.appendChild(embedInfoModalText);
-    embedInfoModalText.innerHTML = getInnerHTML(chartContainer, '&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;');
-    
+    embedInfoModalContent.style.display = "none";
+    embedInfoModalText.innerHTML = "";
 
-    const downloadSVGButton = embedInfoModalText.querySelector('.j1-download-svg-button');
-    downloadSVGButton.addEventListener('click', async () => {
-        const svg = elementToSVG(chartContainer);
-        await inlineResources(svg);
-        // remove element with id j1-embed-info-modal1 from svg
-        const embedInfoModal1 = svg.querySelector('#j1-embed-info-modal1');
-        if (embedInfoModal1) {
-            embedInfoModal1.parentNode.removeChild(embedInfoModal1);
+    // after 300ms timeout, write "Loading..." if no text has been written yet
+    setTimeout(() => {
+        if (embedInfoModalText.innerHTML === "") {
+            embedInfoModalContent.style.display = "";
+            embedInfoModalText.innerHTML = `<p style="margin: 15px; margin-bottom: 5px;">Loading link...</p>`;
         }
-        // remove element j1-embed-link-container1
-        const embedLinkContainer1 = svg.querySelector('#j1-embed-link-container1');
-        if (embedLinkContainer1) {
-            embedLinkContainer1.parentNode.removeChild(embedLinkContainer1);
-        }
-        const svgData = new XMLSerializer().serializeToString(svg);
-        const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
-        const svgUrl = URL.createObjectURL(svgBlob);
-        const downloadLink = document.createElement('a');
-        downloadLink.href = svgUrl;
-        downloadLink.download = "chart.svg";
-        downloadLink.click();
-    });
+    }, 300);
+
+
+    function addSVGDownloadButton() {
+        const downloadSVGButton = embedInfoModalText.querySelector('.j1-download-svg-button');
+        downloadSVGButton.addEventListener('click', async () => {
+            const svg = elementToSVG(chartContainer);
+            await inlineResources(svg);
+            // remove element with id j1-embed-info-modal1 from svg
+            const embedInfoModal1 = svg.querySelector('#j1-embed-info-modal1');
+            if (embedInfoModal1) {
+                embedInfoModal1.parentNode.removeChild(embedInfoModal1);
+            }
+            // remove element j1-embed-link-container1
+            const embedLinkContainer1 = svg.querySelector('#j1-embed-link-container1');
+            if (embedLinkContainer1) {
+                embedLinkContainer1.parentNode.removeChild(embedLinkContainer1);
+            }
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+            const svgUrl = URL.createObjectURL(svgBlob);
+            const downloadLink = document.createElement('a');
+            downloadLink.href = svgUrl;
+            downloadLink.download = "chart.svg";
+            downloadLink.click();
+        });
+    }
 
     fetch('https://scotusstats.com/chart/register.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-                'filter': JSON.stringify(embedOptions),
-            })
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            'filter': JSON.stringify(embedOptions),
         })
+    })
         .then(response => response.json())
         .then(data => {
             // should be "result" => "success", "id" => $id
             if (data.result === "success") {
                 const chartId = data.id;
                 embedInfoModalText.innerHTML = getInnerHTML(chartContainer, chartId);
+                embedInfoModalContent.style.display = "";
+                addSVGDownloadButton();
             } else {
                 console.error("Error registering embed:", data);
             }
