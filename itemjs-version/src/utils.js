@@ -27,3 +27,13 @@ export function justiceName(longName) {
     // delete ", Jr." and ", Sr." from names, then split on spaces and return last name
     return longName.replace(/, (Jr\.|Sr\.)/, '').split(' ').pop();
 }
+
+export function debounce(func, timeout = 300) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+        func.apply(this, args);
+        }, timeout);
+    };
+}

@@ -262,6 +262,7 @@ function updateDisplays(forceUpdate=false) {
   hits = unflattenHits(flatHits);
   buildCharts(hits);
   renderedHits = hitString;
+  buildSideTOC();
 }
 
 
@@ -281,4 +282,60 @@ function setUpMobileMenu() {
   const closeMenuButton = document.getElementById("close-menu-button");
   hamburger.onclick = toggleMenu;
   closeMenuButton.onclick = toggleMenu;
+}
+
+function updateTOC() {
+  var current = "about";
+
+  document.querySelectorAll(".j1-chart-container").forEach((section) => {
+      const sectionTop = section.offsetTop;
+      if (scrollY >= sectionTop - 150) {
+          current = section.getAttribute("id");
+      }
+  });
+
+  document.querySelectorAll(".sidetoc-item-chart").forEach((li) => {
+      li.classList.remove("active");
+      if (current === li.getAttribute("id").replace("sidetoc-item-chart-", "")) {
+          li.classList.add("active");
+          // li.scrollIntoView({ block: "nearest" }); // only needed if toc does not fit into screen
+      }
+  });
+}
+
+function buildSideTOC() {
+  const sidetoc = document.getElementById("sidetoc");
+  sidetoc.innerHTML = "";
+
+  const sectionUl = document.createElement("ul");
+  sidetoc.appendChild(sectionUl);
+
+  const resultsContainer = document.querySelector(".search-panel__results");
+
+
+  for (const section of resultsContainer.querySelectorAll("section")) {
+    const li = document.createElement("li");
+    li.className = "sidetoc-item-section";
+    li.id = "sidetoc-item-section-" + section.id;
+    const a = document.createElement("a");
+    a.href = "#" + section.id;
+    a.textContent = section.querySelector("h2").textContent;
+    li.appendChild(a);
+    sectionUl.appendChild(li);
+    const chartUl = document.createElement("ul");
+    li.appendChild(chartUl);
+    for (const chart of section.querySelectorAll(".j1-chart-container")) {
+      const title = chart.querySelector(".j1-chart-title").textContent;
+      const chartLi = document.createElement("li");
+      chartLi.className = "sidetoc-item-chart";
+      chartLi.id = "sidetoc-item-chart-" + chart.id;
+      const chartA = document.createElement("a");
+      chartA.href = "#" + chart.id;
+      chartA.textContent = title;
+      chartLi.appendChild(chartA);
+      chartUl.appendChild(chartLi);
+    }
+  }
+
+  window.addEventListener("scroll", updateTOC);
 }
