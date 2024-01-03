@@ -32,8 +32,6 @@ export default function frequencyInMajorityChart(element, hits) {
         voterData[justiceName(justice)] = (num / numParticipated[justice] * 100).toFixed(2);
     }
 
-    console.log(voterData);
-
     let subtitle = `Fraction of cases in which the justice voted with the majority, 
     among cases in which the justice participated${getWhichCaveatString()}.`;
 

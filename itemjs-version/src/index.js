@@ -91,7 +91,6 @@ let search;
 
 function buildSearch(data) {
     setUpMobileMenu();
-    // console.log(data);
 
     const index = createIndex(data, options);
     const searchClient = getSearchClient(index);
@@ -245,7 +244,7 @@ function getRefinements() {
     for (const item of filter) {
         refinements[item.attribute] = item.refinements.map(ref => ref.value);
     }
-    console.log(refinements);
+    // console.log(refinements);
 }
 
 function updateDisplays(forceUpdate = false) {

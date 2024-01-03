@@ -11,8 +11,10 @@ import advocateTimeChart from './charts/argument/advocateTime.js';
 
 import numberMajorityOpinionsWrittenChart from './charts/opinions/numberMajorityOpinionsWritten.js';
 import opinionDelayScatterChart from './charts/opinions/opinionDelayScatter.js';
+import opinionAssignmentSankeyChart from './charts/opinions/opinionAssignmentSankey.js';
 
 import numberCasesDecidedChart from './charts/cases/numberCasesDecided.js';
+import lowerCourtPyramidChart from './charts/cases/lowerCourtPyramid.js';
 import topicsTreeMapChart from './charts/cases/topicsTreeMap.js';
 
 function buildChart(chartFunction, chartId, chartsContainer, hits) {
@@ -69,6 +71,7 @@ export function buildCharts(hits) {
 
     buildChart(numberMajorityOpinionsWrittenChart, "number-majority-opinions-written-chart", section, hits);
     buildChart(opinionDelayScatterChart, "opinion-delay-scatter-chart", section, hits);
+    buildChart(opinionAssignmentSankeyChart, "opinion-assignment-sankey-chart", section, hits);
 
     // cases charts
     section = document.createElement('section');
@@ -79,5 +82,6 @@ export function buildCharts(hits) {
     section.appendChild(h2);
 
     buildChart(numberCasesDecidedChart, "number-cases-decided-chart", section, hits);
+    buildChart(lowerCourtPyramidChart, "lower-court-pyramid-chart", section, hits);
     buildChart(topicsTreeMapChart, "topics-tree-map-chart", section, hits);
 }

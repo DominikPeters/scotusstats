@@ -27,7 +27,7 @@ export default function advocateTimeChart(element, hits) {
         data: top20AdvocateTimes,
         title: "Longest total argument time by advocate",
         subtitle: `Top 20 advocates, summing across all their arguments${getAmongCaveatString()}.`,
-        dataFormatter: (value) => value > 60 ? `${(value / 60).toFixed(0)}:${(value % 60).toString().padStart(2, '0')} h` : `${value} m`,
+        dataFormatter: (value) => value > 60 ? `${Math.floor(value / 60)}:${Math.floor(value % 60).toString().padStart(2, '0')} h` : `${Math.floor(value)} m`,
         maxDataValue: maxTime,
         showImage: false,
       }

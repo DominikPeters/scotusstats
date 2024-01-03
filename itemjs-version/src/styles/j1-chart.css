@@ -170,6 +170,17 @@ body {
     white-space: nowrap;
 }
 
+.j1-bar-fill-left {
+    right: 0;
+    left: auto;
+    background-color: #ab2d24;
+}
+
+.j1-bar-label-left {
+    left: auto;
+    right: 5px;
+}
+
 .j1-bar-label.j1-outside {
     color: black;
     white-space: nowrap;
