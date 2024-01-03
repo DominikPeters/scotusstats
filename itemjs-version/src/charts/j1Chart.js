@@ -4,7 +4,7 @@ export function j1Chart(containerElement, options) {
         data,
         maxDataValue,
         sort = true, 
-        dataFormatter = (v) => v, 
+        dataFormatter = (v) => parseInt(v), 
         dataSuffix = '', 
         chartColor = '#4CAF50',
         showImage = true, 
@@ -22,7 +22,7 @@ export function j1Chart(containerElement, options) {
         description.className = 'j1-bar-description';
         if (showImage) {
             const image = document.createElement('img');
-            image.src = `/img/justices/${justiceName}.png`; // Assuming image naming convention
+            image.src = `/img/justices/${justiceName}.jpg`; // Assuming image naming convention
             image.alt = 'Picture of Justice ' + justiceName;
             image.className = 'j1-circle-image';
             description.appendChild(image);
@@ -118,7 +118,7 @@ export function j1Chart(containerElement, options) {
             const container = bar.querySelector('.j1-bar-fill-container');
             const label = container.querySelector('.j1-bar-label');
             const fill = container.querySelector('.j1-bar-fill');
-            const value = parseInt(label.getAttribute('data-value'));
+            const value = parseFloat(label.getAttribute('data-value'));
             const description = bar.querySelector('.j1-bar-description');
 
             label.textContent = dataFormatter(value) + dataSuffix;

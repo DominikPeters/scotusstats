@@ -27,9 +27,12 @@ export default function frequencyInMajorityChart(element, hits) {
             numParticipated[justice]++;
         }
     }
+
     for (const [justice, num] of Object.entries(numInMajority)) {
-        voterData[justiceName(justice)] = (num / numParticipated[justice] * 100).toFixed(1);
+        voterData[justiceName(justice)] = (num / numParticipated[justice] * 100).toFixed(2);
     }
+
+    console.log(voterData);
 
     let subtitle = `Fraction of cases in which the justice voted with the majority, 
     among cases in which the justice participated${getWhichCaveatString()}.`;
@@ -40,6 +43,7 @@ export default function frequencyInMajorityChart(element, hits) {
             data: voterData,
             title: "How often is each justice in the majority?",
             subtitle: subtitle,
+            dataFormatter: (value) => value.toFixed(1),
             dataSuffix: '%',
             maxDataValue: 100,
             showImage: true
