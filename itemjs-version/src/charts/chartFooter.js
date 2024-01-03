@@ -42,6 +42,7 @@ export function getTermInfo() {
 }
 
 export function getEmbedLink(chartContainer, chartType) {
+    if (window.isChartEmbed) return document.createElement('span');
     const filter = search.renderState.scotusstats.currentRefinements.items;
     const embedOptions = {
         filter: filter,

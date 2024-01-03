@@ -89,7 +89,7 @@ $echarts_used = strpos($chart_definition, 'echarts') !== false;
 <?php
 if ($embed_mode) {
     if ($echarts_used) {
-        echo '    <script src="../charts/echarts.min.js"></script>\n';
+        echo '    <script src="../charts/echarts.min.js"></script>' . "\n";
     }
 ?>
     <link rel="stylesheet" href="../../styles/j1-chart.css">   
@@ -103,11 +103,18 @@ if ($embed_mode) {
             border: 0;
             padding: 0;
         }
+
+        .j1-chart-content {
+            padding: 0;
+        }
     </style>
 <?php
 } else {
     if ($echarts_used) {
-        echo '    <script src="charts/echarts.min.js"></script>\n';
+        echo '    <script src="charts/echarts.min.js"></script>' . "\n";
+    }
+    if (!$embed_mode) {
+        echo '    <script src="dom-to-image-more.min.js"></script>' . "\n";
     }
 ?>
     <link rel="stylesheet" href="../styles/j1-chart.css">   
@@ -137,8 +144,10 @@ if ($embed_mode) {
 
 if ($embed_mode) {
     echo "import { unflattenHits } from '../utils.js';\n";
+    echo "window.isChartEmbed = true;\n";
 } else {
     echo "import { unflattenHits } from './utils.js';\n";
+    echo "window.isChartSharePage = true;\n";
 }
 
 // put filters so they are at search.renderState.scotusstats.currentRefinements.items
@@ -245,6 +254,14 @@ window.<?php echo $chart_type; ?>Chart = <?php echo $chart_type; ?>Chart;
 
 const chartsContainer = document.getElementById('chart');
 buildChart(<?php echo $chart_type; ?>Chart, 'chart', chartsContainer, hits);
+
+<?php if ($embed_mode) { ?>
+for (const a of document.querySelectorAll('a')) {
+    if (a.href == "https://scotusstats.com/") {
+        a.href = "https://scotusstats.com/chart/<?php echo $_GET['filter']; ?>";
+    }
+}
+<?php } ?>
 </script>
 </body>
 </html>

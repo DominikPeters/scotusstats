@@ -1,5 +1,3 @@
-import domtoimage from 'dom-to-image';
-
 function getInnerHTML(chartContainer, chartId) {
     return `<p class="j1-share-instruction">
         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
@@ -32,7 +30,7 @@ function getInnerHTML(chartContainer, chartId) {
     `;
 }
 
-export function showEmbedModal(chartContainer, embedOptions) {
+export async function showEmbedModal(chartContainer, embedOptions) {
     const embedInfoModal = document.createElement('div');
     embedInfoModal.classList.add('j1-embed-info-modal');
     const embedInfoModalContent = document.createElement('div');
@@ -40,13 +38,8 @@ export function showEmbedModal(chartContainer, embedOptions) {
     embedInfoModal.appendChild(embedInfoModalContent);
     chartContainer.appendChild(embedInfoModal);
 
-    // hide embed link
-    const embedLink = chartContainer.querySelector('.j1-embed-link-container');
-    embedLink.style.display = "none";
-
     // close modal
     function closeEmbedModal() {
-        embedLink.style.display = "";
         if (embedInfoModal.parentNode) {
             embedInfoModal.parentNode.removeChild(embedInfoModal);
         }
@@ -67,10 +60,14 @@ export function showEmbedModal(chartContainer, embedOptions) {
     // modal text
     const embedInfoModalText = document.createElement('div');
     embedInfoModalContent.appendChild(embedInfoModalText);
-    // embedInfoModalContent.style.display = "none";
-    embedInfoModalText.innerHTML = "";
-    embedInfoModalText.innerHTML = getInnerHTML(chartContainer, "loading");
-    addImageDownloadButtons();
+    const onWeb = window.location.origin === "https://scotusstats.com";
+    if (onWeb) {
+        embedInfoModalContent.style.display = "none";
+    } else {
+        embedInfoModalText.innerHTML = "";
+        embedInfoModalText.innerHTML = getInnerHTML(chartContainer, "offline");
+        addImageDownloadButtons();
+    }
 
     // after 300ms timeout, write "Loading..." if no text has been written yet
     setTimeout(() => {
@@ -80,13 +77,26 @@ export function showEmbedModal(chartContainer, embedOptions) {
         }
     }, 300);
 
+    // webpack lazy load
+    if (!window.isChartEmbed && !window.isChartSharePage) {
+        var domtoimage = await import( /* webpackChunkName: "dom-to-image-more" */
+            'dom-to-image-more'
+        );
+    } else if (window.isChartSharePage) {
+        // has been loaded via <script> tag inserted by embed.php
+        var domtoimage = window.domtoimage;
+    }
+
     function addImageDownloadButtons() {
         const downloadButtonsArea = embedInfoModalText.querySelector('.j1-download-buttons-area');
         const contentElement = chartContainer.querySelector('.j1-chart-content');
         const downloadSVGButton = document.createElement('button');
         downloadSVGButton.textContent = "Download SVG";
         downloadSVGButton.addEventListener('click', async () => {
-            const svgDataUrl = await domtoimage.toSvg(contentElement);
+            const svgDataUrl = await domtoimage.toSvg(
+                contentElement,
+                { filter: (node) => { return node.className !== "j1-embed-link-container" } }
+            );
             const svgBlob = await (await fetch(svgDataUrl)).blob();
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement('a');
@@ -101,6 +111,7 @@ export function showEmbedModal(chartContainer, embedOptions) {
         downloadPNGButton.addEventListener('click', async () => {
             const scale = 4;
             const pngBlob = await domtoimage.toBlob(contentElement, {
+                filter: (node) => { return node.className !== "j1-embed-link-container" },
                 width: contentElement.clientWidth * scale,
                 height: contentElement.clientHeight * scale,
                 style: {
@@ -108,7 +119,7 @@ export function showEmbedModal(chartContainer, embedOptions) {
                     transformOrigin: "top left",
                     background: "white"
                 }
-                });
+            });
             const pngUrl = URL.createObjectURL(pngBlob);
             const downloadLink = document.createElement('a');
             downloadLink.href = pngUrl;
@@ -119,25 +130,27 @@ export function showEmbedModal(chartContainer, embedOptions) {
         downloadButtonsArea.appendChild(downloadPNGButton);
     }
 
-    // fetch('https://scotusstats.com/chart/register.php', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/x-www-form-urlencoded'
-    //     },
-    //     body: new URLSearchParams({
-    //         'filter': JSON.stringify(embedOptions),
-    //     })
-    // })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         // should be "result" => "success", "id" => $id
-    //         if (data.result === "success") {
-    //             const chartId = data.id;
-    //             embedInfoModalText.innerHTML = getInnerHTML(chartContainer, chartId);
-    //             embedInfoModalContent.style.display = "";
-    //             addSVGDownloadButton();
-    //         } else {
-    //             console.error("Error registering embed:", data);
-    //         }
-    //     });
+    if (onWeb) {
+        fetch('https://scotusstats.com/chart/register.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                'filter': JSON.stringify(embedOptions),
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // should be "result" => "success", "id" => $id
+                if (data.result === "success") {
+                    const chartId = data.id;
+                    embedInfoModalText.innerHTML = getInnerHTML(chartContainer, chartId);
+                    embedInfoModalContent.style.display = "";
+                    addImageDownloadButtons();
+                } else {
+                    console.error("Error registering embed:", data);
+                }
+            });
+    }
 }

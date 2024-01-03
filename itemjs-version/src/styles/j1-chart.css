@@ -115,6 +115,7 @@ body {
 
 .j1-download-buttons-area button {
     margin-right: 5px;
+    cursor: pointer;
 }
 
 .j1-embed-info-close {

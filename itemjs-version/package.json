@@ -18,8 +18,7 @@
   },
   "dependencies": {
     "apexcharts": "^3.45.1",
-    "dom-to-image": "^2.6.0",
-    "dom-to-svg": "^0.12.2",
+    "dom-to-image-more": "^3.2.0",
     "echarts": "^5.4.3",
     "instantsearch-itemsjs-adapter": "^1.0.0",
     "instantsearch.js": "^4.39.0"

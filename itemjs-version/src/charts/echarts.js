@@ -1,8 +1,8 @@
-import * as echarts from './echarts.min.js';
+// import * as echarts from './echarts.min.js';
 
 let allEcharts = {};
 
-export function echartsContainer(containerElement, options) {
+export async function echartsContainer(containerElement, options) {
     const { echartsOptions, height = '400px', title = '', subtitle = '' } = options;
 
     // Clear existing chart
@@ -42,14 +42,24 @@ export function echartsContainer(containerElement, options) {
     chartElement.style.width = "100%";
     chartElement.style.height = height;
     
-    let chart = echarts.init(chartElement, null, {renderer: 'svg'});
-    chart.setOption(echartsOptions);
-
     // Create footer
     const footer = document.createElement('p');
     footer.className = 'j1-chart-footer';
-    footer.textContent = 'Chart: scotusstats.com';
+    footer.innerHTML = 'Chart: <a href="https://scotusstats.com/">scotusstats.com</a> ';
     contentElement.appendChild(footer);
+
+    // webpack lazy load
+    if (!window.isChartEmbed && !window.isChartSharePage) {
+        var echarts = await import( /* webpackChunkName: "echarts" */
+            './echarts.min.js'
+        );
+    } else {
+        // has been loaded via <script> tag inserted by embed.php
+        var echarts = window.echarts;
+    }
+
+    let chart = echarts.init(chartElement, null, {renderer: 'svg'});
+    chart.setOption(echartsOptions);
 
     // workaround a bug where only one of the charts will resize, so do one resize for all charts
     // https://github.com/apache/echarts/issues/13004
