@@ -55,6 +55,7 @@ export default function frequencyInMajorityOverTimeChart(element, hits) {
 
     let series = [];
     for (const [justice, data] of Object.entries(voterData)) {
+        const labelLayout = data[data.length - 1] === '-' ? {} : { moveOverlap: 'shiftY' };
         series.push({
             name: justice,
             type: 'line',
@@ -63,6 +64,7 @@ export default function frequencyInMajorityOverTimeChart(element, hits) {
                 show: true,
                 formatter: justice
             },
+            labelLayout: labelLayout,
             smooth: 0.1,
             lineStyle: {
                 width: 4

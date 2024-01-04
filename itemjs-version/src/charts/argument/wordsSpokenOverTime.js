@@ -44,6 +44,7 @@ export default function wordsSpokenOverTimeChart(element, hits) {
 
     let series = [];
     for (const [justice, justiceData] of Object.entries(data)) {
+        const labelLayout = justiceData[justiceData.length - 1] === '-' ? {} : { moveOverlap: 'shiftY' };
         series.push({
             name: justice,
             type: 'line',
@@ -52,6 +53,7 @@ export default function wordsSpokenOverTimeChart(element, hits) {
                 show: true,
                 formatter: justice
             },
+            labelLayout: labelLayout,
             smooth: 0.1,
             lineStyle: {
                 width: 4
