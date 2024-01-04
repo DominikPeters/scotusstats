@@ -1,8 +1,9 @@
-
-export function j1PyramidChart(containerElement, options) {
+export async function j1PyramidChart(containerElement, options) {
     const {
         leftData,
         rightData,
+        leftTooltips,
+        rightTooltips,
         maxDataValue,
         sort = true,
         dataFormatter = (v) => parseInt(v), 
@@ -14,7 +15,7 @@ export function j1PyramidChart(containerElement, options) {
     } = options;
 
     // Function to create a bar
-    function createBar(justiceName, leftValue, rightValue) {
+    function createBar(justiceName, leftValue, rightValue, leftTooltip, rightTooltip) {
         const bar = document.createElement('div');
         bar.className = 'j1-bar';
 
@@ -36,10 +37,11 @@ export function j1PyramidChart(containerElement, options) {
         // Bar fill container
         const fillContainerRight = document.createElement('div');
         fillContainerRight.className = 'j1-bar-fill-container';
-
+        
         // Bar fill
         const fill = document.createElement('div');
         fill.className = 'j1-bar-fill';
+        if (rightTooltip) tippy.default(fill, { content: rightTooltip, allowHTML: true });
 
         // Bar label
         const label = document.createElement('span');
@@ -55,6 +57,7 @@ export function j1PyramidChart(containerElement, options) {
         // Bar fill
         const fillLeft = document.createElement('div');
         fillLeft.className = 'j1-bar-fill j1-bar-fill-left';
+        if (leftTooltip) tippy.default(fillLeft, { content: leftTooltip, allowHTML: true });
 
         // Bar label
         const labelLeft = document.createElement('span');
@@ -101,16 +104,32 @@ export function j1PyramidChart(containerElement, options) {
         contentElement.appendChild(header);
     }
 
-    // Create bars
-    // zip
-    const leftEntries = Object.entries(leftData);
-    const rightEntries = Object.entries(rightData);
-    const entries = leftEntries.map((e, i) => [e, rightEntries[i]]);
-    if (sort) {
-        // sort by sum of two values
-        entries.sort(([[, leftValueA], [, rightValueA]], [[, leftValueB], [, rightValueB]]) => (leftValueB + rightValueB) - (leftValueA + rightValueA));
+    // Create footer
+    const footer = document.createElement('p');
+    footer.className = 'j1-chart-footer';
+    footer.innerHTML = 'Chart: <a href="https://scotusstats.com/">scotusstats.com</a> ';
+    contentElement.appendChild(footer);
+
+    // load tippy
+    if (!window.isChartEmbed && !window.isChartSharePage) {
+        var tippy = await import( /* webpackChunkName: "tippy" */
+            'tippy.js'
+        );
+    // } else if (window.isChartSharePage) {
+    } else {
+        var tippy = undefined;
     }
-    entries.forEach(([[justiceName, leftValue], [, rightValue]]) => createBar(justiceName, leftValue, rightValue));
+
+    // Create bars
+    // zip, noting that tooltips are optional
+    const zipped = Object.keys(leftData).map((key, i) => [key, leftData[key], rightData[key], leftTooltips?.[key], rightTooltips?.[key]]);
+    if (sort) {
+        // sort by sum of left and right values, breaking ties by right value
+        zipped.sort((a, b) => (b[1] + b[2]) - (a[1] + a[2]) || b[2] - a[2]);
+    }
+    for (const [justiceName, leftValue, rightValue, leftTooltip, rightTooltip] of zipped) {
+        createBar(justiceName, leftValue, rightValue, leftTooltip, rightTooltip);
+    }
 
     // Adjust labels and bar widths
     function adjustLabels() {
@@ -161,13 +180,10 @@ export function j1PyramidChart(containerElement, options) {
         });
     }
 
-    // Create footer
-    const footer = document.createElement('p');
-    footer.className = 'j1-chart-footer';
-    footer.innerHTML = 'Chart: <a href="https://scotusstats.com/">scotusstats.com</a> ';
-    contentElement.appendChild(footer);
-
     adjustLabels();
+
+    contentElement.removeChild(footer);
+    contentElement.appendChild(footer);
 
     window.addEventListener('resize', adjustLabels);
 }

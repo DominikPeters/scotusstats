@@ -21,6 +21,7 @@
     "dom-to-image-more": "^3.2.0",
     "echarts": "^5.4.3",
     "instantsearch-itemsjs-adapter": "^1.0.0",
-    "instantsearch.js": "^4.39.0"
+    "instantsearch.js": "^4.39.0",
+    "tippy.js": "^6.3.7"
   }
 }
