@@ -1,6 +1,6 @@
 import { echartsContainer } from "../echarts.js";
 import { getAmongCaveatString } from "../caveatGenerator.js";
-import { getEmbedLink } from "../chartFooter.js";
+import { getEmbedLink, getTermInfo } from "../chartFooter.js";
 
 export default function opinionAssignmentSankeyChart(element, hits) {
     let assignments = {};
@@ -86,6 +86,9 @@ export default function opinionAssignmentSankeyChart(element, hits) {
     );
 
     const footer = element.querySelector('.j1-chart-footer');
+
+    footer.appendChild(getTermInfo());
+
     const embedLink = getEmbedLink(element, 'opinionDelayScatter');
     footer.appendChild(embedLink);
 }

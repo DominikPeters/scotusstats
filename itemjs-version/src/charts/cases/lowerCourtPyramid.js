@@ -87,7 +87,7 @@ export default function lowerCourtPyramidChart(element, hits) {
                 delete losses[lowerCourt];
             }
         }
-        subtitle += `Number of reversal and affirm decisions. Only showing lower courts with at least two decided cases${getWhichCaveatString()}.`;
+        subtitle = `Number of reversal and affirm decisions. Only showing lower courts with at least two decided cases${getWhichCaveatString()}.`;
     } else {
         subtitle = `Number of reversal and affirm decisions${getAmongCaveatString()}.`;
     }

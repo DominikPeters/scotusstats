@@ -15,6 +15,7 @@ import opinionAssignmentSankeyChart from './charts/opinions/opinionAssignmentSan
 
 import numberCasesDecidedChart from './charts/cases/numberCasesDecided.js';
 import lowerCourtPyramidChart from './charts/cases/lowerCourtPyramid.js';
+import amicusCountScatterChart from './charts/cases/amicusCountScatter.js';
 import topicsTreeMapChart from './charts/cases/topicsTreeMap.js';
 
 function buildChart(chartFunction, chartId, chartsContainer, hits) {
@@ -83,5 +84,6 @@ export function buildCharts(hits) {
 
     buildChart(numberCasesDecidedChart, "number-cases-decided-chart", section, hits);
     buildChart(lowerCourtPyramidChart, "lower-court-pyramid-chart", section, hits);
+    buildChart(amicusCountScatterChart, "amicus-count-scatter-chart", section, hits);
     buildChart(topicsTreeMapChart, "topics-tree-map-chart", section, hits);
 }
