@@ -73,6 +73,7 @@ def analyze_transcript(case_metadata, oral_argument_transcript):
     # Extract list of presiding justices
     # justices = {member["name"] : member for member in case_metadata["heard_by"][0]["members"]}
     justices = [member["name"] for member in case_metadata["heard_by"][0]["members"]]
+    justice_last_name = {member["name"] : member["last_name"] for member in case_metadata["heard_by"][0]["members"]}
 
     words_spoken = {
         justice : {
@@ -102,9 +103,7 @@ def analyze_transcript(case_metadata, oral_argument_transcript):
 
     overall_length = 0
 
-    chapters = []
-
-    for section_counter, section in enumerate(sections):
+    for section in sections:
         turns = section["turns"]
         
         # Determine the headline (name of the first advocate speaking)
@@ -176,12 +175,20 @@ def analyze_transcript(case_metadata, oral_argument_transcript):
                 prev_justice = current_speaker
 
     # compress
+    compressed_words_spoken = {}
     for justice in justices:
-        words_spoken[justice] = [words_spoken[justice]["petitioner"], words_spoken[justice]["respondent"], words_spoken[justice]["other"]]
+        compressed_words_spoken[justice_last_name[justice]] = [words_spoken[justice]["petitioner"], words_spoken[justice]["respondent"], words_spoken[justice]["other"]]
+    # note this also throws out advocates; reinstate later if needed
+        
+    # reformat argument time into a list of 3-tuples (advocate name, oyez identifier, time)
+    argument_time = [
+        (advocate, advocates[advocate]["advocate"]["identifier"], argument_time[advocate])
+        for advocate in advocates.keys()
+    ]
 
     return {
         "overallLength": overall_length,
-        "wordsSpoken": words_spoken,
+        "wordsSpoken": compressed_words_spoken,
         # "numberTurns": number_turns,
         "argumentTime": argument_time,
     }
@@ -200,7 +207,7 @@ def interpret_decision(case_metadata):
                     and vote["joining"] is None:
                     if majority_writer is not None:
                         raise Exception(f"Case {case_metadata['docket_number']} has multiple majority opinion writers")
-                    majority_writer = vote["member"]["name"]
+                    majority_writer = vote["member"]["last_name"]
             if majority_writer is None:
                 raise Exception(f"Case {case_metadata['docket_number']} has no majority opinion writer")
             
@@ -209,15 +216,14 @@ def interpret_decision(case_metadata):
             for vote in decision["votes"]:
                 if vote["vote"] == "majority" \
                     and vote["joining"] is not None \
-                    and vote["joining"][0]["name"] == majority_writer:
-                    majority_joiners.append(vote["member"]["name"])
+                    and vote["joining"][0]["last_name"] == majority_writer:
+                    majority_joiners.append(vote["member"]["last_name"])
 
             # find dissenting opinion writers
             dissenting_writers = []
             for vote in decision["votes"]:
-                if vote["opinion_type"] == "dissent" \
-                    and vote["joining"] is None:
-                    dissenting_writers.append(vote["member"]["name"])
+                if vote["opinion_type"] == "dissent":
+                    dissenting_writers.append(vote["member"]["last_name"])
 
             # find voters in majority and in minority
             majority_voters = []
@@ -225,11 +231,11 @@ def interpret_decision(case_metadata):
             abstainers = []
             for vote in decision["votes"]:
                 if vote["vote"] == "majority":
-                    majority_voters.append(vote["member"]["name"])
+                    majority_voters.append(vote["member"]["last_name"])
                 elif vote["vote"] == "minority":
-                    minority_voters.append(vote["member"]["name"])
+                    minority_voters.append(vote["member"]["last_name"])
                 elif vote["vote"] is None or vote["vote"] == "none":
-                    abstainers.append(vote["member"]["name"])
+                    abstainers.append(vote["member"]["last_name"])
                 else:
                     raise Exception(f"Unknown opinion type: {vote['opinion_type']}.")
                 
@@ -328,8 +334,8 @@ def handle_case(case_url, term, docket_number, redownload=False):
     if "decisions" in case_metadata and case_metadata["decisions"]:
         record["decision"] = interpret_decision(case_metadata)
     else:
-        log.info(f"Case {case_number} has no decisions, skipping")
-        return
+        log.info(f"Case {case_number} has no decisions")
+        # return
 
     # Load the oral argument transcript
     transcript_json_filename = f"oyez/{case_metadata['term']}/{case_number}_transcript.json"
