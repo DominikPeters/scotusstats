@@ -6,29 +6,42 @@ export function j1Chart(containerElement, options) {
         sort = true, 
         dataFormatter = (v) => parseInt(v), 
         dataSuffix = '', 
-        chartColor = '#4CAF50',
+        // chartColor = '#4CAF50',
+        chartColor = 'hsl(216, 42%, 50%)',
         showImage = true, 
+        customImages = undefined,
         title = '', 
         subtitle = '' 
     } = options;
 
     // Function to create a bar
-    function createBar(justiceName, value) {
+    function createBar(labelText, value) {
         const bar = document.createElement('div');
         bar.className = 'j1-bar';
 
         // Bar description
         const description = document.createElement('div');
         description.className = 'j1-bar-description';
-        if (showImage) {
+        if (showImage && customImages && customImages[labelText]) {
             const image = document.createElement('img');
-            image.src = `/img/justices/${justiceName}.jpg`; // Assuming image naming convention
-            image.alt = 'Picture of Justice ' + justiceName;
+            image.src = customImages[labelText];
+            image.alt = 'Picture of ' + labelText;
+            image.className = 'j1-circle-image';
+            image.onerror = () => {
+                image.src = `/img/generic.png`;
+                image.alt = 'Missing picture';
+            }
+            image.loading = 'lazy';
+            description.appendChild(image);
+        } else if (showImage) {
+            const image = document.createElement('img');
+            image.src = `/img/justices/${labelText}.png`;
+            image.alt = 'Picture of Justice ' + labelText;
             image.className = 'j1-circle-image';
             description.appendChild(image);
         }
         const name = document.createElement('span');
-        name.innerHTML = justiceName;
+        name.innerHTML = labelText;
         description.appendChild(name);
 
         // Bar fill container
