@@ -1,5 +1,8 @@
 *.json
 *.xml
+data-pipeline/docket/*
+data
+itemjs-version/src/img/advocates
 
 !package.json
 
