@@ -4,16 +4,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#4a75b5">
 
-  <link rel="shortcut icon" href="./favicon.png">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.1.0/themes/satellite-min.css">
-  <link rel="stylesheet" href="styles/index.css">
-  <link rel="stylesheet" href="styles/app.css">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles/satellite-min.css">
   <link rel="stylesheet" href="styles/j1-chart.css">
+  <link rel="stylesheet" href="styles/app.css">
 
-  <title>scotusstats</title>
+  <title>scotusstats: explore statistics about the Supreme Court</title>
 </head>
 
 <body>
@@ -26,7 +28,39 @@
     <h1 class="header-title">
       <a href="/">scotusstats.com</a>
     </h1>
+    <!-- <a href="/about" class="header-link">About</a> -->
+    <a href="/podcast" class="header-link">Podcast</a>
+    <a href="/videos" class="header-link">Videos</a>
   </header>
+
+  <div class="hero">
+    <div class="hero-image">
+      <img src="img/hero/background.webp" width="3788" height="1952" alt="Supreme Court building">
+      <img src="img/hero/hero.svg" width="3788" height="1952" alt="Supreme Court building with bar chart showing" class="hero-bars">
+      <img src="img/hero/cutout.webp" width="3788" height="1952" alt="Supreme Court building cutout">
+      <p style="font-size: 65%; position: absolute; bottom: 0; left: 10px; color: hsl(215, 89%, 90%);">
+        Photo: Joe Ravi, CC-BY-SA 3.0
+      </p>
+    </div>
+    <div class="hero-text">
+      <p>
+        <span style="font-weight: 600;">scotusstats.com</span> is a tool for exploring statistics related to cases heard by the Supreme Court of the United States.
+      </p>
+      <p>
+        All charts can be customized by changing the filter settings.
+      </p>
+      <p style="font-size: 70%;">
+        The charts are based on data from the <a href="http://scdb.wustl.edu/">scdb database</a>, from the <a href="https://www.oyez.org/">oyez.org project</a>, and from the <a href="https://www.supremecourt.gov/">Supreme Court's website</a>.
+      </p>
+      <p style="font-size: 70%;">
+        This website is maintained by <a href="https://dominik-peters.de">Dominik Peters</a> as a side project.
+        Feedback and bug reports are welcome.
+        The code is open source and available on <a href="https://github.com/DominikPeters/scotusstats">GitHub</a>.
+        It also hosts a <a href="/podcast">podcast feed</a> of audio recordings of Supreme Court oral arguments for convenient listening, 
+        and a <a href="/videos">video channel</a> of Supreme Court oral arguments with synchronized transcripts.
+      </p>
+    </div>
+  </div>
 
   <div class="container">
     <div class="search-panel">
