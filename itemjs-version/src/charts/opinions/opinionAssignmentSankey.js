@@ -1,6 +1,7 @@
 import { echartsContainer } from "../echarts.js";
 import { getAmongCaveatString } from "../caveatGenerator.js";
 import { getEmbedLink, getTermInfo } from "../chartFooter.js";
+import { shortenCasename } from "../../utils.js";
 
 export default function opinionAssignmentSankeyChart(element, hits) {
     let assignments = {};
@@ -16,12 +17,12 @@ export default function opinionAssignmentSankeyChart(element, hits) {
             totalAssignments[majOpinionAssigner] = 0;
         }
         if (!assignments[majOpinionAssigner][majOpinionWriter]) {
-            assignments[majOpinionAssigner][majOpinionWriter] = 0;
+            assignments[majOpinionAssigner][majOpinionWriter] = [];
         }
         if (!assignees.includes(majOpinionWriter)) {
             assignees.push(majOpinionWriter);
         }
-        assignments[majOpinionAssigner][majOpinionWriter]++;
+        assignments[majOpinionAssigner][majOpinionWriter].push(hit.name);
         totalAssignments[majOpinionAssigner]++;
     }
     let assigners = Object.keys(assignments).sort((a, b) => totalAssignments[b] - totalAssignments[a]);
@@ -54,12 +55,26 @@ export default function opinionAssignmentSankeyChart(element, hits) {
     }
     let links = [];
     for (const [assigner, assignerAssignments] of Object.entries(assignments)) {
-        for (const [assignee, numAssignments] of Object.entries(assignerAssignments)) {
-            links.push({source: `${assigner} `, target: `${assignee}`, value: numAssignments});
+        for (const [assignee, cases] of Object.entries(assignerAssignments)) {
+            let tooltip = `${assigner} assigned <strong>${cases.length}</strong> majority opinions to ${assignee}`;
+            if (cases.length > 5) {
+                tooltip += ", including:<br>";
+            } else {
+                tooltip += ":<br>";
+            }
+            for (let i = 0; i < Math.min(cases.length, 5); i++) {
+                tooltip += `&bullet; ${shortenCasename(cases[i], 29)}<br>`;
+            }
+            tooltip = tooltip.slice(0, -4); // remove last <br>
+            links.push({
+                source: `${assigner} `, 
+                target: `${assignee}`, 
+                value: cases.length, 
+                tooltip: tooltip, 
+                lineStyle: { color: window.darkMode ? '#fff' : '#314656' }
+            });
         }
     }
-
-    console.log(links);
 
     let subtitle = getAmongCaveatString();
     if (subtitle) {
@@ -77,7 +92,22 @@ export default function opinionAssignmentSankeyChart(element, hits) {
             echartsOptions: {
                 tooltip: {
                     trigger: 'item',
-                    triggerOn: 'mousemove'
+                    triggerOn: 'mousemove',
+                    formatter: function (params) {
+                        let data = params.data;
+                        // check if data has depth
+                        if (data.depth === undefined) {
+                            // edge
+                            return data.tooltip;
+                        } else {
+                            // node
+                            if (data.depth == 0) {
+                                return `${data.name} assigned <strong>${params.value}</strong> majority opinions`;
+                            } else {
+                                return `${data.name} was assigned <strong>${params.value}</strong> majority opinions`;
+                            }
+                        }
+                    }
                 },
                 series: {
                     type: 'sankey',

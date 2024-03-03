@@ -1,8 +1,9 @@
 import { echartsContainer } from "../echarts.js";
 import { getAmongCaveatString } from "../caveatGenerator.js";
 import { getEmbedLink } from "../chartFooter.js";
+import { shortenCasename } from "../../utils.js";
 
-const xAxisCap = 270;
+const xAxisCap = 180;
 
 export default function argumentLengthScatterChart(element, hits) {
     let numArguments = {};
@@ -10,19 +11,17 @@ export default function argumentLengthScatterChart(element, hits) {
     for (const hit of hits) {
         if (!hit.oralArgumentInfo || !hit.oralArgumentInfo.overallLength) continue;
         let term = hit.term;
-        let mins = hit.oralArgumentInfo.overallLength / 60;
-        // round up to nearest 10
-        mins = Math.ceil(mins / 10) * 10;
-        mins = Math.min(mins, xAxisCap);
+        let name = hit.name;
+        let mins = Math.floor(hit.oralArgumentInfo.overallLength / 60);
         if (!numArguments[term]) {
             numArguments[term] = [];
         }
-        numArguments[term].push(mins);
+        numArguments[term].push({ "name": name, "mins": mins });
         maxMinutes = Math.max(maxMinutes, mins);
     }
     // make a sorted list of mins buckets
     let minsBuckets = [];
-    for (let i = 0; i < maxMinutes; i += 10) {
+    for (let i = 0; i <= Math.min(xAxisCap, maxMinutes); i += 10) {
         minsBuckets.push(i);
     }
     // create a sorted list of terms
@@ -33,10 +32,11 @@ export default function argumentLengthScatterChart(element, hits) {
     // y = term (index in terms array)
     // size = number of cases
     let frequency = {};
+    let examples = {};
     let maxFrequency = 0;
     for (const [i, term] of terms.entries()) {
-        for (const mins of numArguments[term]) {
-            let x = Math.floor(mins / 10) - 1;
+        for (const { name, mins } of numArguments[term]) {
+            let x = Math.min(Math.floor(mins / 10), xAxisCap / 10);
             if (!frequency[x]) {
                 frequency[x] = {};
             }
@@ -44,12 +44,17 @@ export default function argumentLengthScatterChart(element, hits) {
                 frequency[x][i] = 0;
             }
             frequency[x][i]++;
+            if (!examples[x]) examples[x] = {};
+            if (!examples[x][i]) examples[x][i] = [];
+            if (examples[x][i].length < 4) {
+                examples[x][i].push(`${shortenCasename(name)} (${mins} min.)`);
+            }
             maxFrequency = Math.max(maxFrequency, frequency[x][i]);
         }
     }
     for (const [x, frequencies] of Object.entries(frequency)) {
         for (const [y, size] of Object.entries(frequencies)) {
-            data.push([parseInt(x), parseInt(y), size]);
+            data.push([parseInt(x), parseInt(y), size, examples[x][y]]);
         }
     }
 
@@ -62,21 +67,28 @@ export default function argumentLengthScatterChart(element, hits) {
             echartsOptions: {
                 tooltip: {
                     position: 'top',
-                    extraCssText: 'text-align: center;',
                     formatter: function (params) {
                         let minsString = params.value[0] * 10 + '&ndash;' + (params.value[0] * 10 + 10) + ' minutes';
-                        if (params.value[0] == (xAxisCap / 10) - 1) {
-                            minsString = `${xAxisCap - 10}+ minutes`;
+                        if (params.value[0] == (xAxisCap / 10)) {
+                            minsString = `${xAxisCap}+ minutes`;
                         }
+                        let exampleString = '';
+                        if (params.value[3].length < 4) {
+                            exampleString += ':<br>';
+                        } else {
+                            exampleString += ', including:<br>';
+                        }
+                        exampleString += '&bullet; ' + params.value[3].join('<br/>&bullet; ');
                         return (
                             '<strong>' +
                             params.value[2] +
                             (params.value[2] != 1 ? '</strong> arguments' : '</strong> argument') +
                             ' lasted <strong>' +
                             minsString +
-                            '</strong><br/>in the ' +
+                            '</strong> in the ' +
                             terms[params.value[1]] +
-                            ' term'
+                            ' term' +
+                            exampleString
                         );
                     }
                 },
