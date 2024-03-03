@@ -51,7 +51,10 @@ export default function wordsSpokenOverTimeChart(element, hits) {
             data: justiceData,
             endLabel: {
                 show: true,
-                formatter: justice
+                formatter: justice,
+                textBorderColor: window.darkMode ? '#1a1a1a' : '#fff',
+                textBorderWidth: 3,
+                color: window.darkMode ? '#efefef' : '#000',
             },
             labelLayout: labelLayout,
             smooth: 0.1,
@@ -82,7 +85,7 @@ export default function wordsSpokenOverTimeChart(element, hits) {
                     nameTextStyle: {
                         verticalAlign: 'middle', 
                         align: 'left',
-                        backgroundColor: 'white',
+                        backgroundColor: window.darkMode ? '#1a1a1a' : '#fff',
                         padding: [0, 4, 0, -2],
                     },
                 },

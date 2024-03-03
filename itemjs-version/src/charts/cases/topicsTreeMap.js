@@ -89,7 +89,9 @@ export default function topicsTreeMapChart(element, hits) {
                             position: 'outside',
                             padding: 3,
                             silent: false,
-                            fontSize: 9
+                            fontSize: 9,
+                            textBorderColor: window.darkMode ? '#1a1a1a' : '#fff',
+                            color: window.darkMode ? '#efefef' : '#000'
                           },
                         }
                       ]

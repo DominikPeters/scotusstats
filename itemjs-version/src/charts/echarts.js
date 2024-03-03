@@ -59,6 +59,14 @@ export async function echartsContainer(containerElement, options) {
     }
 
     let chart = echarts.init(chartElement, null, {renderer: 'svg'});
+    
+    echartsOptions.textStyle = { fontFamily: 'Merriweather' };
+    for (let axis of ['xAxis', 'yAxis']) {
+        if (echartsOptions[axis]) {
+            echartsOptions[axis].axisLine = { lineStyle: { color: window.darkMode ? '#aaa' : '#333' } };
+        }
+    }
+
     chart.setOption(echartsOptions);
 
     // workaround a bug where only one of the charts will resize, so do one resize for all charts

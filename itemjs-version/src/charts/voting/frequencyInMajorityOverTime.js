@@ -62,15 +62,18 @@ export default function frequencyInMajorityOverTimeChart(element, hits) {
             data: data,
             endLabel: {
                 show: true,
-                formatter: justice
+                formatter: justice,
+                textBorderColor: window.darkMode ? '#1a1a1a' : '#fff',
+                textBorderWidth: 3,
+                color: window.darkMode ? '#efefef' : '#000',
             },
             labelLayout: labelLayout,
-            smooth: 0.1,
+            smooth: 0.2,
             lineStyle: {
-                width: 4
+                width: 6
             },
             symbol: 'circle',
-            symbolSize: 8,
+            symbolSize: 10,
         });
     }
 
