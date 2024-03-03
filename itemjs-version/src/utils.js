@@ -37,3 +37,31 @@ export function debounce(func, timeout = 300) {
         }, timeout);
     };
 }
+
+function shortenPartyName(party, maxLength) {
+    if (party === "Securities and Exchange Commission") return "SEC";
+    if (party === "United States") return "US";
+    if (party === "United States of America") return "US";
+    if (party === "Federal Trade Commission") return "FTC";
+    if (party === "Federal Communications Commission") return "FCC";
+    if (party === "National Labor Relations Board") return "NLRB";
+    if (party === "Federal Bureau of Investigation") return "FBI";
+    if (party === "Environmental Protection Agency") return "EPA";
+    var shortened = party
+        .replace("LLC", "")
+        .replace("Inc.", "")
+        .replace("Inc", "")
+        .replace("Corp.", "")
+        .replace("L.P.", "")
+        .replace("L.L.C.", "")
+        .replace("United States", "US");
+    // remove end comma
+    if (shortened.endsWith(",")) shortened = shortened.slice(0, -1);
+    // truncate
+    if (shortened.length > maxLength) shortened = shortened.slice(0, maxLength - 3) + "...";
+    return shortened;
+}
+
+export function shortenCasename(casename, maxLength=60) {
+    return casename.split(' v. ').map(party => shortenPartyName(party, maxLength)).join(' v. ');
+}
