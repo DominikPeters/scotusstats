@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#4a75b5">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../styles/satellite-min.css">
+  <link rel="stylesheet" href="../styles/app.css">
+
+  <title>Oral Argument Podcast | scotusstats</title>
+
+  <style>
+    ul.feature-list li {
+      margin-bottom: 0.3rem;
+    }
+
+    img.screenshot {
+      float: right;
+      max-width: 300px;
+      margin: 0 0 1rem 2rem;
+      box-shadow: 0 0 20px #00000055;
+    }
+
+    .badges {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      width: 100%;
+      margin: 2rem 0;
+    }
+
+    @media screen and (max-width: 640px) {
+      .screenshot {
+        display: none;
+      }
+
+      .hero-image {
+        width: 100% !important;
+        height: 240px !important;
+      }
+
+      .badges {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <h1 class="header-title">
+      <a href="/">scotusstats.com</a>
+    </h1>
+    <!-- <a href="/about" class="header-link" width="3788" height="1952">About</a> -->
+    <a href="/podcast" class="header-link" width="3788" height="1952">Podcast</a>
+    <a href="/videos" class="header-link" width="3788" height="1952">Videos</a>
+  </header>
+
+  <main style="text-align: center; padding: 1rem;">
+
+    <h2>Oral Argument Podcast Feed</h2>
+
+    <div class="hero-image" style="width: 650px; height: 350px; border: 1px solid hsl(216, 42%, 30%); margin: 1rem auto;">
+      <img src="../img/hero/background.webp" width="3788" height="1952" alt="Supreme Court building">
+      <img src="../img/hero/waveform-scotus.svg" width="3788" height="1952" alt="Supreme Court building with waveform showing behind it">
+      <img src="../img/hero/cutout.webp" width="3788" height="1952" alt="Supreme Court building cutout">
+      <p style="font-size: 65%; position: absolute; bottom: 0; left: 10px; color: hsl(215, 89%, 90%);">
+        Photo: Joe Ravi, CC-BY-SA 3.0
+      </p>
+    </div>
+
+    <div class="badges">
+      <a href="https://podcasts.apple.com/us/podcast/supreme-court-oral-arguments/id1734053538"><img src="/podcast/apple-podcasts.svg" alt="Listen on Apple Podcasts"></a>
+      <a href="https://open.spotify.com/show/3fxexipVTGI255vbjckmgJ"><img src="/podcast/spotify.svg" alt="Listen on Spotify"></a>
+      <a href="https://scotusstats.com/podcast/podcast.rss"><img src="/podcast/rss.svg" alt="Get the RSS feed"></a>
+      <a href="https://github.com/DominikPeters/scotus-podcast"><img src="/podcast/github.svg" alt="Code on Github" height="38"></a>
+    </div>
+
+    <section style="max-width: 800px; margin: 0 auto; text-align: left;">
+      <img src="/podcast/screenshot.webp" class="screenshot">
+
+      <p>
+        I'm providing a podcast feed of the audio recordings of the oral arguments at the U.S. Supreme Court.
+      </p>
+
+      <ul class="feature-list">
+        <li>Podcast adds new arguments automatically and immediately after they become available on supremecourt.gov</li>
+        <li><strong>Detailed episode descriptions</strong> with facts about the case from <a href="https://www.oyez.org">oyez.org</a> and links to docket and other information.</li>
+        <li><strong>Convenient chapters</strong> to skip to any exchange between a justice and an advocate (available as soon as <a href="https://www.oyez.org">oyez.org</a> publishes the transcript).</li>
+      </ul>
+
+      <p>
+        The podcast is available on <a href="https://podcasts.apple.com/us/podcast/supreme-court-oral-arguments/id1734053538">Apple Podcasts</a> and as an <a href="https://scotusstats.com/podcast/podcast.rss">RSS feed</a>.
+        The source code that is used to generate the podcast feed is open source and available on <a href="https://github.com/DominikPeters/scotus-podcast">GitHub</a>.
+      </p>
+
+      <p>
+        Please consider rating the podcast so that more people can find it. Feel free to reach out to me with any feedback or suggestions: <a href="https://dominik-peters.de">dominik-peters.de</a>. I hope you enjoy the podcast!
+      </p>
+
+      <p class="screenshot">
+        Right: Screenshot of the podcast in Apple Podcasts, showing the available chapters. Do you need a way to add chapters to your podcast? Check out my open-source online <a href="https://mp3chapters.github.io/">mp3 chapter editor</a>.
+      </p>
+    </section>
+
+  </main>
+
+</body>
+
+</html>
