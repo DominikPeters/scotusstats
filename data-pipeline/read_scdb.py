@@ -3,11 +3,17 @@ import json
 import os
 import sys
 
-db_file = "scdb/SCDB_2022_01_caseCentered_Citation.csv"
+db_file = "scdb/SCDB_2023_01_caseCentered_Citation.csv"
 
 # load coding data
 issues = json.load(open("scdb/issues.json"))
 legal_provisions = json.load(open("scdb/legal-provisions.json"))
+
+# load justice names
+translations = json.load(open("scdb/justice-ids.json"))
+translate_scdb_id = {}
+for justice_record in translations:
+    translate_scdb_id[str(justice_record["scdb_number"])] = justice_record["last_name"]
 
 # read in the SCDB file
 with open(db_file, "r", encoding='ISO-8859-1') as f:
@@ -59,6 +65,26 @@ for term in sorted(os.listdir(data_folder)):
                     if scdb_case["declarationUncon"] == "1":
                         case_data["flags"].add("declaration-unconstitutional")
                     case_data["flags"] = list(case_data["flags"])
+
+                    if scdb_case["majOpinAssigner"]:
+                        case_data["majOpinionAssigner"] = translate_scdb_id[scdb_case["majOpinAssigner"]]
+
+                    case_dispositions = {
+                        "1": "stay, petition, or motion granted",
+                        "2": "affirmed (includes modified)",
+                        "3": "reversed",
+                        "4": "reversed and remanded",
+                        "5": "vacated and remanded",
+                        "6": "affirmed and reversed (or vacated) in part",
+                        "7": "affirmed and reversed (or vacated) in part and remanded",
+                        "8": "vacated",
+                        "9": "petition denied or appeal dismissed",
+                        "10": "certification to or from a lower court",
+                        "11": "no disposition",
+                    }
+                    if scdb_case["caseDisposition"]:
+                        case_data["caseDisposition"] = case_dispositions[scdb_case["caseDisposition"]]
+
                     with open(f"{data_folder}/{term}/{case}", "w") as f:
                         json.dump(case_data, f, indent=2)
                     break
