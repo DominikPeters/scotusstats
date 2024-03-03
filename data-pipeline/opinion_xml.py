@@ -30,10 +30,16 @@ def analyze_opinion(term, docket_number):
     filename = f"xml/{term}/{docket_number}.xml"
     if not os.path.exists(filename):
         url = f"https://www.supremecourt.gov/xmls/archive/{docket_number}.xml"
+        print(f"Downloading {url}")
         response = requests.get(url)
         time.sleep(1)
-        content = response.content
         if response.status_code != 200:
+            return None
+        content = response.content
+        if b"ERROR: File or directory not found" in content:
+            with open("xml404.list.txt", "a") as f404:
+                f404.write(f"{docket_number}\n")
+                print(f"404: {docket_number}")
             return None
         with open(filename, "wb") as file:
             file.write(content)
@@ -65,25 +71,30 @@ def analyze_opinion(term, docket_number):
 
 data_folder = "../data"
 
+with open("xml404.list.txt", "r") as f404:
+    dockets404 = set(f404.read().splitlines())
+
 # go through all terms (subfolders of data)
 for term in sorted(os.listdir(data_folder)):
     if not len(term) == 4 or not os.path.isdir(f"{data_folder}/{term}"):
         continue
     print(f"Processing term {term}")
     os.makedirs(f"xml/{term}", exist_ok=True)
-    for case in tqdm(list(os.listdir(f"{data_folder}/{term}"))):
+    for case in list(os.listdir(f"{data_folder}/{term}")):
         if case.endswith(".json"):
             # get the docket number
             docket_number = case.split(".")[0]
+            if docket_number in dockets404:
+                continue
             with open(f"{data_folder}/{term}/{case}", "r") as f:
                 case_data = json.load(f)
             try:
                 opinions = analyze_opinion(term, docket_number)
+                if opinions is None:
+                    print(f"Could not get XML for {docket_number}")
+                    continue
             except ET.ParseError as e:
                 print(f"Could not parse XML for {docket_number}")
-                continue
-            if opinions is None:
-                print(f"Could not get XML for {docket_number}")
                 continue
             case_data["opinions"] = opinions
             with open(f"{data_folder}/{term}/{case}", "w") as f:
