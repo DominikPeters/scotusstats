@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#4a75b5">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../styles/satellite-min.css">
+  <link rel="stylesheet" href="../styles/app.css">
+
+  <title>Oral Argument Transcript Videos | scotusstats</title>
+
+  <style>
+    ul.feature-list li {
+      margin-bottom: 0.3rem;
+    }
+
+    img.screenshot {
+      float: right;
+      width: 500px;
+      max-width: 100%;
+      margin: 0 0 1rem 2rem;
+      box-shadow: 0 0 20px #00000055;
+    }
+
+    .badges {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      width: 100%;
+      margin: 2rem 0;
+    }
+
+    @media screen and (max-width: 640px) {
+
+      .badges {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <h1 class="header-title">
+      <a href="/">scotusstats.com</a>
+    </h1>
+    <!-- <a href="/about" class="header-link" width="3788" height="1952">About</a> -->
+    <a href="/podcast" class="header-link" width="3788" height="1952">Podcast</a>
+    <a href="/videos" class="header-link" width="3788" height="1952">Videos</a>
+  </header>
+
+  <main style="text-align: center; padding: 1rem;">
+
+    <h2>Oral Argument Transcript Videos</h2>
+
+    <div class="badges">
+      <a href="https://www.youtube.com/@SCOTUSOralArgument"><img src="/videos/youtube.svg" alt="Go to YouTube channel"></a>
+      <a href="https://github.com/DominikPeters/scotus-videos"><img src="/podcast/github.svg" alt="Code on Github" height="38"></a>
+    </div>
+
+    <section style="max-width: 1000px; margin: 0 auto; text-align: left;">
+      
+      <a href="https://youtu.be/t-uJtoTbEYc"><img src="/videos/thumbnail.jpeg" class="screenshot"></a>
+      <a href="https://youtu.be/wXqea8QnEBY"><img src="/videos/frame-1.webp" class="screenshot"></a>
+      <a href="https://youtu.be/ha34W2VDjPg"><img src="/videos/frame-2.webp" class="screenshot"></a>
+
+      <p>
+        I'm maintaining a <a href="https://www.youtube.com/@SCOTUSOralArgument">YouTube channel</a> that publishes videos of Supreme Court oral argument transcripts.
+        The data is taken from <a href="https://www.oyez.org">oyez.org</a>.
+        The videos make it easy to see who is the current speaker and which speaking turns are coming up.
+        For some past arguments, the audio of the opinion announcements are provided also.
+      </p>
+
+      <p>
+        Technically, the videos are made by rendering the data using HTML/CSS, saving the frames to image files using puppeteer by screenshotting, and encoding the video using ffmpeg. 
+        The code generating the videos is open source and available on <a href="https://github.com/DominikPeters/scotus-videos">GitHub</a>.
+      </p>
+
+      <p>
+        I started this project to provide alternatives to other videos uploaded to YouTube, which either show a still frame only, or otherwise videos of dogs or cartoons, and these did not seem like an appropriate representation of the Court.
+      </p>
+
+      <p>
+        Please consider subscribing and liking videos, since that helps with visibility and discoverability.
+      </p>
+
+    </section>
+
+  </main>
+
+</body>
+
+</html>
