@@ -249,7 +249,8 @@ function getRefinements() {
 
 function updateDisplays(forceUpdate = false) {
     getRefinements();
-    const mobileMenuOpen = document.querySelector(".search-panel").classList.contains("show-menu");
+    window.darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const mobileMenuOpen = document.querySelector("body").classList.contains("show-menu");
     if (mobileMenuOpen) {
         return; // can't see charts
     }
@@ -276,15 +277,15 @@ function updateDisplays(forceUpdate = false) {
 
 
 function setUpMobileMenu() {
-    const searchPanel = document.querySelector(".search-panel");
+    const body = document.querySelector("body");
     function toggleMenu() {
         console.log("toggle menu");
-        if (searchPanel.classList.contains("show-menu")) {
-            searchPanel.classList.remove("show-menu");
+        if (body.classList.contains("show-menu")) {
+            body.classList.remove("show-menu");
             // await render, then update displays
             setTimeout(() => updateDisplays(true), 1);
         } else {
-            searchPanel.classList.add("show-menu");
+            body.classList.add("show-menu");
         }
     }
     const hamburger = document.getElementById("hamburger-button");
@@ -305,8 +306,10 @@ function updateTOC() {
 
     document.querySelectorAll(".sidetoc-item-chart").forEach((li) => {
         li.classList.remove("active");
-        if (current === li.getAttribute("id").replace("sidetoc-item-chart-", "")) {
+        if (current === li.getAttribute("id").replace("sidetoc-item-chart-", "") &&
+            !li.classList.contains("active")) {
             li.classList.add("active");
+            li.parentElement.previousSibling.scrollIntoView({ block: "nearest" }); // header
             // li.scrollIntoView({ block: "nearest" }); // only needed if toc does not fit into screen
         }
     });
