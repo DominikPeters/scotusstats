@@ -8,5 +8,7 @@ python fetch_oyez.py 2020
 python fetch_oyez.py 2021
 python fetch_oyez.py 2022
 python read_scdb.py
+python scdb-decisions.py
 python opinion_xml.py
+python count_amicus_briefs.py
 python single_json_maker.py
