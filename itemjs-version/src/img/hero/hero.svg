@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="1212.2" height="624.6">
+    <image href="background.webp" width="1212.2" height="624.6" preserveAspectRatio="none" />
+    <g style="fill:#0e243e;fill-opacity:.63">
+        <path d="M419.1 88.2h66.5v167.9h-66.5z" style="fill:#0e243e;stroke-width:7.6103;fill-opacity:.63" />
+        <path d="M495.8 14.5h66.5v290h-66.5z" style="fill:#0e243e;stroke-width:10;fill-opacity:.63" />
+        <path d="M572.4 41.1h66.5v229.6h-66.5z" style="fill:#0e243e;stroke-width:8.89757;fill-opacity:.63" />
+        <path d="M649 73.7h66.5v192.1H649z" style="fill:#0e243e;stroke-width:8.13942;fill-opacity:.63" />
+        <path d="M725.6 60.4h66.5v290h-66.5z" style="fill:#0e243e;stroke-width:10;fill-opacity:.63" />
+        <path d="M802.2 148.6h66.5v201.8h-66.5z" style="fill:#0e243e;stroke-width:8.34166;fill-opacity:.63" />
+        <path d="M878.9 194.5h66.5v155.9h-66.5z" style="fill:#0e243e;stroke-width:7.33144;fill-opacity:.63" />
+        <path d="M955.5 234.4h66.5v111.2h-66.5z" style="fill:#0e243e;stroke-width:6.1914;fill-opacity:.63" />
+        <path d="M189.3 186.1h66.5v158.3h-66.5z" style="fill:#0e243e;stroke-width:7.38805;fill-opacity:.63" />
+        <path d="M265.9 174h66.5v170.4h-66.5z" style="fill:#0e243e;stroke-width:7.66486;fill-opacity:.63" />
+        <path d="M342.5 151H409v189.7h-66.5z" style="fill:#0e243e;stroke-width:8.08807;fill-opacity:.63" />
+    </g>
+    <image href="cutout.webp" width="1212.2" height="624.6" preserveAspectRatio="none" />
+</svg>
