@@ -60,7 +60,7 @@ export default function amicusCountScatterChart(element, hits) {
         element,
         {
             title: "How many amicus briefs?",
-            subtitle: `Number of cases with by number of amici ("friends of the court") who filed briefs, by term${getAmongCaveatString()}.`,
+            subtitle: `Number of cases by number of amici ("friends of the court") who filed briefs, by term${getAmongCaveatString()}.`,
             height: `${terms.length * 50 + 100}px`,
             echartsOptions: {
                 tooltip: {
