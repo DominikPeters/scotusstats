@@ -69,7 +69,8 @@ $echarts_used = strpos($chart_definition, 'echarts') !== false;
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" conte  nt="#000000"> 
-    <link rel="shortcut icon" href="../favicon.png">    
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.1.0/themes/satellite-min.css">
     <!-- og title and description -->
     <meta property="og:title" content="<?php echo $chart_title; ?>">
@@ -93,10 +94,10 @@ if ($embed_mode) {
     }
 ?>
     <link rel="stylesheet" href="../../styles/j1-chart.css">   
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
     <style> 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-                Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            font-family: "Merriweather", "Georgia", serif;
         }
 
         .j1-chart-container {
@@ -118,12 +119,11 @@ if ($embed_mode) {
     }
 ?>
     <link rel="stylesheet" href="../styles/j1-chart.css">   
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
     <style> 
         body {
             margin: 0;
-            padding: 10px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-                Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            font-family: "Merriweather", "Georgia", serif;
         }
 
         #chart {
