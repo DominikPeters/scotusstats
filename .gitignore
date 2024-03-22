@@ -3,6 +3,7 @@
 data-pipeline/docket/*
 data
 itemjs-version/src/img/advocates
+itemjs-version/ftp.sh
 
 !package.json
 
