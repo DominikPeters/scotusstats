@@ -2,8 +2,8 @@
 *.xml
 data-pipeline/docket/*
 data
-itemjs-version/src/img/advocates
-itemjs-version/ftp.sh
+website/src/img/advocates
+website/ftp.sh
 old-version
 
 !package.json
