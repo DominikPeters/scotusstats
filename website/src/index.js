@@ -299,7 +299,7 @@ function updateTOC() {
 
     document.querySelectorAll(".j1-chart-container").forEach((section) => {
         const sectionTop = section.offsetTop;
-        if (scrollY >= sectionTop - 150) {
+        if (section.style.display != "none" && scrollY >= sectionTop - 150) {
             current = section.getAttribute("id");
         }
     });
