@@ -8,8 +8,14 @@ export default function topicsTreeMapChart(element, hits) {
 
     let data = [];
 
+    let anyDataFound = false;
+
     for (const hit of hits) {
-        if (!hit.issue || !hit.issue.lvl0) continue;
+        if (!hit.issue || !hit.issue.lvl0) {
+            continue;
+        } else {
+            anyDataFound = true;
+        }
         if (!hit.issue.lvl1) { throw new Error("lvl1 is undefined"); }
 
         let lvl0 = hit.issue.lvl0;
@@ -43,6 +49,12 @@ export default function topicsTreeMapChart(element, hits) {
         let lvl1Index = lvl1Encountered[lvl1];
         data[lvl0Index].children[lvl1Index].value++;
         data[lvl0Index].value++;
+    }
+
+    if (!anyDataFound) {
+        element.innerHTML = "";
+        element.style.display = "none";
+        return;
     }
 
     echartsContainer(

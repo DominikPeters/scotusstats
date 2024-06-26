@@ -22,6 +22,7 @@ function buildChart(chartFunction, chartId, chartsContainer, hits) {
     const chartContainer = document.createElement('div');
     chartContainer.id = chartId;
     chartContainer.className = "j1-chart-container";
+    chartContainer.style.display = "";
     chartsContainer.appendChild(chartContainer);
     chartFunction(chartContainer, hits);
 }

@@ -33,8 +33,15 @@ export default function lowerCourtPyramidChart(element, hits) {
     let wins = {};
     let losses = {};
     let dispositionCounts = {};
+
+    let anyDataFound = false;
+
     for (const hit of hits) {
-        if (!hit.lowerCourt || !hit.caseDisposition) continue;
+        if (!hit.lowerCourt || !hit.caseDisposition) {
+            continue;
+        } else {
+            anyDataFound = true;
+        }
         let lowerCourt = hit.lowerCourt;
         let caseDisposition = hit.caseDisposition;
         if (!wins[lowerCourt]) {
@@ -52,6 +59,12 @@ export default function lowerCourtPyramidChart(element, hits) {
             dispositionCounts[lowerCourt][caseDisposition] = 0;
         }
         dispositionCounts[lowerCourt][caseDisposition]++;
+    }
+
+    if (!anyDataFound) {
+        element.innerHTML = "";
+        element.style.display = "none";
+        return;
     }
     
     let winsTooltips = {};

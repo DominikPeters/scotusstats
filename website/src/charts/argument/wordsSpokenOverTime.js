@@ -30,6 +30,12 @@ export default function wordsSpokenOverTimeChart(element, hits) {
     }
     // create a sorted list of terms
     terms = Object.keys(terms).sort();
+    if (terms.length <= 1) {
+        // not enough data to show chart
+        element.innerHTML = "";
+        element.style.display = "none";
+        return;
+    }
     let data = {};
     for (const justice of Object.keys(wordsSpoken)) {
         data[justiceName(justice)] = [];

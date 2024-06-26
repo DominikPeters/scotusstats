@@ -35,6 +35,12 @@ export default function frequencyInMajorityOverTimeChart(element, hits) {
     }
     // create a sorted list of terms
     terms = Object.keys(terms).sort();
+    if (terms.length <= 1) {
+        // not enough data to show chart
+        element.innerHTML = "";
+        element.style.display = "none";
+        return;
+    }
     let voterData = {};
     // get minimum value for y-axis
     let minPercent = 100;
