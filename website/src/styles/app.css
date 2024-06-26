@@ -194,6 +194,10 @@ body {
   color: #555;
 }
 
+.sidetoc .sidetoc-item-chart a:hover {
+  color: #222;
+}
+
 .sidetoc .sidetoc-item-chart.active {
   border-left: 2px hsl(216, 42%, 43%) solid;
 }
@@ -403,6 +407,10 @@ svg text {
     color: #efefef;
   }
 
+  a {
+    color: #d5ccff;
+  }
+
   .ais-CurrentRefinements-category {
     background-color: hsl(216, 42%, 35%);
   }
@@ -431,6 +439,10 @@ svg text {
 
   .sidetoc .sidetoc-item-chart a {
     color: #efefef;
+  }
+
+  .sidetoc .sidetoc-item-chart a:hover {
+    color: #d5ccff;
   }
 
   .sidetoc .sidetoc-item-chart.active {
