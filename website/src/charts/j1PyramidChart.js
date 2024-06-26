@@ -3,6 +3,7 @@ export async function j1PyramidChart(containerElement, options) {
         leftData,
         rightData,
         leftTooltips,
+        centerTooltips,
         rightTooltips,
         maxDataValue,
         sort = true,
@@ -33,6 +34,9 @@ export async function j1PyramidChart(containerElement, options) {
         name.innerHTML = justiceName;
         name.style.margin = '0 auto';
         description.appendChild(name);
+        if (centerTooltips) {
+            tippy.default(description, { content: centerTooltips[justiceName], allowHTML: true });
+        }
 
         // Bar fill container
         const fillContainerRight = document.createElement('div');

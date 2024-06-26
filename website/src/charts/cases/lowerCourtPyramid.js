@@ -29,6 +29,91 @@ const lossDispositions = [
     "vacated",
 ];
 
+const courtDescriptions = {
+    "First Circuit": [
+        "Maine",
+        "Massachusetts",
+        "New Hampshire",
+        "Puerto Rico",
+        "Rhode Island"
+    ],
+    "Second Circuit": [
+        "Connecticut",
+        "New York",
+        "Vermont"
+    ],
+    "Third Circuit": [
+        "Delaware",
+        "New Jersey",
+        "Pennsylvania",
+        "Virgin Islands"
+    ],
+    "Fourth Circuit": [
+        "Maryland",
+        "North Carolina",
+        "South Carolina",
+        "Virginia",
+        "West Virginia"
+    ],
+    "Fifth Circuit": [
+        "Louisiana",
+        "Mississippi",
+        "Texas"
+    ],
+    "Sixth Circuit": [
+        "Kentucky",
+        "Michigan",
+        "Ohio",
+        "Tennessee"
+    ],
+    "Seventh Circuit": [
+        "Illinois",
+        "Indiana",
+        "Wisconsin"
+    ],
+    "Eighth Circuit": [
+        "Arkansas",
+        "Iowa",
+        "Minnesota",
+        "Missouri",
+        "Nebraska",
+        "North Dakota",
+        "South Dakota"
+    ],
+    "Ninth Circuit": [
+        "Alaska",
+        "Arizona",
+        "California",
+        "Hawaii",
+        "Idaho",
+        "Montana",
+        "Nevada",
+        "Oregon",
+        "Washington",
+        "Guam",
+        "Northern Mariana Islands"
+    ],
+    "Tenth Circuit": [
+        "Colorado",
+        "Kansas",
+        "New Mexico",
+        "Oklahoma",
+        "Utah",
+        "Wyoming"
+    ],
+    "Eleventh Circuit": [
+        "Alabama",
+        "Florida",
+        "Georgia"
+    ],
+    "D.C. Circuit": [
+        "District of Columbia"
+    ],
+    "Federal Circuit": [
+        "Nationwide jurisdiction for certain cases"
+    ]
+};
+
 export default function lowerCourtPyramidChart(element, hits) {
     let wins = {};
     let losses = {};
@@ -66,9 +151,10 @@ export default function lowerCourtPyramidChart(element, hits) {
         element.style.display = "none";
         return;
     }
-    
+
     let winsTooltips = {};
     let lossesTooltips = {};
+    let centerTooltips = {};
     for (const lowerCourt of Object.keys(dispositionCounts)) {
         winsTooltips[lowerCourt] = "";
         lossesTooltips[lowerCourt] = "";
@@ -81,6 +167,12 @@ export default function lowerCourtPyramidChart(element, hits) {
         }
         winsTooltips[lowerCourt] = winsTooltips[lowerCourt].replace(" (includes modified)", "");
         winsTooltips[lowerCourt] = winsTooltips[lowerCourt].replace(" (or vacated)", "");
+        // show states in tooltip
+        if (courtDescriptions[lowerCourt]) {
+            centerTooltips[lowerCourt] = courtDescriptions[lowerCourt].join(", ");
+        } else {
+            centerTooltips[lowerCourt] = "";
+        }
     }
 
     // delete lower courts with 0 wins + losses
@@ -113,6 +205,7 @@ export default function lowerCourtPyramidChart(element, hits) {
             rightData: wins,
             leftTooltips: lossesTooltips,
             rightTooltips: winsTooltips,
+            centerTooltips: centerTooltips,
             title: "Lower Court Scorecard",
             subtitle: subtitle,
         }
