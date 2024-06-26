@@ -1,8 +1,9 @@
 
-export function j1Chart(containerElement, options) {
+export async function j1Chart(containerElement, options) {
     const {
         data,
         maxDataValue,
+        tooltips,
         sort = true, 
         dataFormatter = (v) => parseInt(v), 
         dataSuffix = '', 
@@ -15,7 +16,7 @@ export function j1Chart(containerElement, options) {
     } = options;
 
     // Function to create a bar
-    function createBar(labelText, value) {
+    function createBar(labelText, value, tooltip) {
         const bar = document.createElement('div');
         bar.className = 'j1-bar';
 
@@ -47,6 +48,10 @@ export function j1Chart(containerElement, options) {
         // Bar fill container
         const fillContainer = document.createElement('div');
         fillContainer.className = 'j1-bar-fill-container';
+
+        if (tooltip) {
+            tippy.default(fillContainer, { content: tooltip, allowHTML: true });
+        }
 
         // Bar fill
         const fill = document.createElement('div');
@@ -95,15 +100,33 @@ export function j1Chart(containerElement, options) {
         contentElement.appendChild(header);
     }
 
-    // Create bars
-    if (sort) {
-        Object.entries(data)
-            .sort(([, valueA], [, valueB]) => valueB - valueA)
-            .forEach(([justiceName, value]) => createBar(justiceName, value));
+    // Create footer
+    const footer = document.createElement('p');
+    footer.className = 'j1-chart-footer';
+    footer.innerHTML = 'Chart: <a href="https://scotusstats.com/">scotusstats.com</a> ';
+    contentElement.appendChild(footer);
+
+    // load tippy
+    if (!window.isChartEmbed && !window.isChartSharePage) {
+        var tippy = await import( /* webpackChunkName: "tippy" */
+            'tippy.js'
+        );
+    // } else if (window.isChartSharePage) {
     } else {
-        Object.entries(data)
-            .forEach(([justiceName, value]) => createBar(justiceName, value));
+        var tippy = undefined;
     }
+
+    // Create bars
+    // zip, noting that tooltips are optional
+    const zipped = Object.keys(data).map((key, i) => [key, data[key], tooltips ? tooltips[key] : undefined]);
+
+    if (sort) {
+        zipped.sort((a, b) => b[1] - a[1]);
+    }
+
+    zipped.forEach(([key, value, tooltip]) => {
+        createBar(key, value, tooltip);
+    });
 
     // Adjust labels and bar widths
     function adjustLabels() {
@@ -149,13 +172,10 @@ export function j1Chart(containerElement, options) {
         });
     }
 
-    // Create footer
-    const footer = document.createElement('p');
-    footer.className = 'j1-chart-footer';
-    footer.innerHTML = 'Chart: <a href="https://scotusstats.com/">scotusstats.com</a> ';
-    contentElement.appendChild(footer);
-
     adjustLabels();
+
+    contentElement.removeChild(footer);
+    contentElement.appendChild(footer);
 
     window.addEventListener('resize', adjustLabels);
 }

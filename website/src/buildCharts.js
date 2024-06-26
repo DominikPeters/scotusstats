@@ -53,8 +53,6 @@ export function buildCharts(hits, allRecords) {
     h2.innerText = "Voting";
     section.appendChild(h2);
 
-    console.log(hits);
-
     buildChart(frequencyInMajorityChart, "frequency-in-majority-chart", section, hits);
     buildChart(frequencyInMajorityOverTimeChart, "frequency-in-majority-over-time-chart", section, lookingAtSingleTerm() ? allRecords : hits);
     buildChart(agreementPairsChart, "agreement-pairs-chart", section, hits);

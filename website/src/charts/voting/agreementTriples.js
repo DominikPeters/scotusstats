@@ -31,6 +31,7 @@ export default function agreementTriplesChart(element, hits) {
 
     let numAgreements = {};
     let numCases = {};
+    let disagreementCases = {};
     for (const hit of hits) {
         if (!hit.decision || !hit.decision.majorityVoters || !hit.decision.minorityVoters) continue;
         let majorityVoters = hit.decision.majorityVoters;
@@ -44,12 +45,15 @@ export default function agreementTriplesChart(element, hits) {
                     if (!numAgreements[triple]) {
                         numAgreements[triple] = 0;
                         numCases[triple] = 0;
+                        disagreementCases[triple] = [];
                     }
                     numCases[triple]++;
                     if (majorityVoters.includes(allVoters[i]) && majorityVoters.includes(allVoters[j]) && majorityVoters.includes(allVoters[k])) {
                         numAgreements[triple]++;
                     } else if (minorityVoters.includes(allVoters[i]) && minorityVoters.includes(allVoters[j]) && minorityVoters.includes(allVoters[k])) {
                         numAgreements[triple]++;
+                    } else {
+                        disagreementCases[triple].push(hit.name);
                     }
                 }
             }
@@ -59,6 +63,7 @@ export default function agreementTriplesChart(element, hits) {
     // top 5 triples
     let topTriples = Object.entries(numAgreements).sort((a, b) => b[1] - a[1]).slice(0, 5);
     let topTriplesData = {};
+    let tooltips = {};
     for (const triple of topTriples) {
         const split = triple[0].split('-');
         const justice1 = justiceName(split[0]);
@@ -71,12 +76,20 @@ export default function agreementTriplesChart(element, hits) {
             <span class="j1-group-members-text">${justice1} & ${justice2} & ${justice3}</span>
         </span>`;
         topTriplesData[description] = (triple[1] / numCases[triple[0]] * 100).toFixed(1);
+        tooltips[description] = `Agreement in ${triple[1]} of ${numCases[triple[0]]} cases`;
+        if (triple[1] / numCases[triple[0]] * 100 < 100) {
+            tooltips[description] += `<br>
+            Cases not in agreement: 
+            <br>&bullet; 
+            ${disagreementCases[triple[0]].join('<br>&bullet; ')}`;
+        }
     }
 
     j1Chart(
         element,
         {
             data: topTriplesData,
+            tooltips: tooltips,
             title: "Which triples of justices agree most frequently?",
             subtitle: `Fraction of cases in which 3 justices voted together, among cases in which all participated${getWhichCaveatString()}. (The "3-3-3" court?)`,
             dataSuffix: '%',

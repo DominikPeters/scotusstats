@@ -30,6 +30,7 @@ export default function disOrAgreementPairsChart(agree) {
 
         let numAgreements = {};
         let numCases = {};
+        let disagreementCases = {};
         for (const hit of hits) {
             if (!hit.decision || !hit.decision.majorityVoters || !hit.decision.minorityVoters) continue;
             let majorityVoters = hit.decision.majorityVoters.sort();
@@ -42,16 +43,21 @@ export default function disOrAgreementPairsChart(agree) {
                     if (!numAgreements[pair]) {
                         numAgreements[pair] = 0;
                         numCases[pair] = 0;
+                        disagreementCases[pair] = [];
                     }
                     numCases[pair]++;
                     if (majorityVoters.includes(allVoters[i]) && majorityVoters.includes(allVoters[j])) {
                         numAgreements[pair]++;
                     } else if (minorityVoters.includes(allVoters[i]) && minorityVoters.includes(allVoters[j])) {
                         numAgreements[pair]++;
+                    } else {
+                        disagreementCases[pair].push(hit.name);
                     }
                 }
             }
         }
+
+        const tooltips = {};
 
         // top pairs
         let topPairs;
@@ -70,12 +76,18 @@ export default function disOrAgreementPairsChart(agree) {
                 <span class="j1-group-members-text">${justice1} & ${justice2}</span>
             </span>`;
             topPairData[description] = pair[1] / numCases[pair[0]] * 100;
+            tooltips[description] = `Agreement: ${pair[1]} of ${numCases[pair[0]]} cases`;
+            if (pair[1] / numCases[pair[0]] * 100 < 100) {
+                tooltips[description] += `<br>
+                Cases with disagreement: <br>&bullet; ${disagreementCases[pair[0]].join('<br>&bullet; ')}`;
+            }
         }
 
         j1Chart(
             element,
             {
                 data: topPairData,
+                tooltips: agree ? tooltips : {},
                 title: agree ? "Which pairs of justices agree most frequently?" : "Which pairs of justices agree least frequently?",
                 subtitle: `Fraction of cases in which the two justices voted together, among cases in which both participated${getWhichCaveatString()}.`,
                 dataSuffix: '%',

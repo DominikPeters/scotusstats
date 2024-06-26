@@ -16,7 +16,7 @@ export async function j1PyramidChart(containerElement, options) {
     } = options;
 
     // Function to create a bar
-    function createBar(justiceName, leftValue, rightValue, leftTooltip, rightTooltip) {
+    function createBar(justiceName, leftValue, rightValue, leftTooltip, rightTooltip, centerTooltip) {
         const bar = document.createElement('div');
         bar.className = 'j1-bar';
 
@@ -34,9 +34,7 @@ export async function j1PyramidChart(containerElement, options) {
         name.innerHTML = justiceName;
         name.style.margin = '0 auto';
         description.appendChild(name);
-        if (centerTooltips) {
-            tippy.default(description, { content: centerTooltips[justiceName], allowHTML: true });
-        }
+        if (centerTooltip) tippy.default(description, { content: centerTooltip, allowHTML: true });
 
         // Bar fill container
         const fillContainerRight = document.createElement('div');
@@ -126,13 +124,13 @@ export async function j1PyramidChart(containerElement, options) {
 
     // Create bars
     // zip, noting that tooltips are optional
-    const zipped = Object.keys(leftData).map((key, i) => [key, leftData[key], rightData[key], leftTooltips?.[key], rightTooltips?.[key]]);
+    const zipped = Object.keys(leftData).map((key, i) => [key, leftData[key], rightData[key], leftTooltips?.[key], rightTooltips?.[key], centerTooltips?.[key]]);
     if (sort) {
         // sort by sum of left and right values, breaking ties by right value
         zipped.sort((a, b) => (b[1] + b[2]) - (a[1] + a[2]) || b[2] - a[2]);
     }
-    for (const [justiceName, leftValue, rightValue, leftTooltip, rightTooltip] of zipped) {
-        createBar(justiceName, leftValue, rightValue, leftTooltip, rightTooltip);
+    for (const [justiceName, leftValue, rightValue, leftTooltip, rightTooltip, centerTooltip] of zipped) {
+        createBar(justiceName, leftValue, rightValue, leftTooltip, rightTooltip, centerTooltip);
     }
 
     // Adjust labels and bar widths
