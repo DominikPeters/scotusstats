@@ -92,6 +92,8 @@ let search;
 function buildSearch(data) {
     setUpMobileMenu();
 
+    window.allRecords = unflattenHits(data);
+
     const index = createIndex(data, options);
     const searchClient = getSearchClient(index);
 
@@ -101,7 +103,8 @@ function buildSearch(data) {
         initialUiState: {
             scotusstats: {
                 refinementList: {
-                    term: ['2022', '2021', '2020', '2019'],
+                    // term: ['2022', '2021', '2020', '2019'],
+                    term: ['2023']
                 },
             }
         },
@@ -269,9 +272,9 @@ function updateDisplays(forceUpdate = false) {
     if (hitString === renderedHits && !forceUpdate) {
         return; // avoid re-rendering
     }
-    hits = unflattenHits(flatHits);
-    buildCharts(hits);
     renderedHits = hitString;
+    hits = unflattenHits(flatHits);
+    buildCharts(hits, window.allRecords);
     buildSideTOC();
 }
 

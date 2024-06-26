@@ -27,7 +27,16 @@ function buildChart(chartFunction, chartId, chartsContainer, hits) {
     chartFunction(chartContainer, hits);
 }
 
-export function buildCharts(hits) {
+function lookingAtSingleTerm() {
+    const items = search.renderState.scotusstats.currentRefinements.items;
+    if (items.length !== 1) return false;
+    const item = items[0];
+    if (item.attribute !== "term") return false;
+    if (item.refinements.length !== 1) return false;
+    return true;
+}
+
+export function buildCharts(hits, allRecords) {
     if (!hits) return;
     const chartsContainer = document.getElementById('charts');
     chartsContainer.innerHTML = "";
@@ -44,8 +53,10 @@ export function buildCharts(hits) {
     h2.innerText = "Voting";
     section.appendChild(h2);
 
+    console.log(hits);
+
     buildChart(frequencyInMajorityChart, "frequency-in-majority-chart", section, hits);
-    buildChart(frequencyInMajorityOverTimeChart, "frequency-in-majority-over-time-chart", section, hits);
+    buildChart(frequencyInMajorityOverTimeChart, "frequency-in-majority-over-time-chart", section, lookingAtSingleTerm() ? allRecords : hits);
     buildChart(agreementPairsChart, "agreement-pairs-chart", section, hits);
     buildChart(disagreementPairsChart, "disagreement-pairs-chart", section, hits);
     buildChart(agreementTriplesChart, "agreement-triples-chart", section, hits);
@@ -59,8 +70,8 @@ export function buildCharts(hits) {
     section.appendChild(h2);
 
     buildChart(fractionWordsChart, "fraction-words-chart", section, hits);
-    buildChart(wordsSpokenOverTimeChart, "words-spoken-over-time-chart", section, hits);
-    buildChart(argumentLengthScatterChart, "argument-length-scatter-chart", section, hits);
+    buildChart(wordsSpokenOverTimeChart, "words-spoken-over-time-chart", section, lookingAtSingleTerm() ? allRecords : hits);
+    buildChart(argumentLengthScatterChart, "argument-length-scatter-chart", section, lookingAtSingleTerm() ? allRecords : hits);
     buildChart(advocateTimeChart, "advocate-time-chart", section, hits);
 
     // opinions charts
@@ -72,7 +83,7 @@ export function buildCharts(hits) {
     section.appendChild(h2);
 
     buildChart(numberMajorityOpinionsWrittenChart, "number-majority-opinions-written-chart", section, hits);
-    buildChart(opinionDelayScatterChart, "opinion-delay-scatter-chart", section, hits);
+    buildChart(opinionDelayScatterChart, "opinion-delay-scatter-chart", section, lookingAtSingleTerm() ? allRecords : hits);
     buildChart(opinionAssignmentSankeyChart, "opinion-assignment-sankey-chart", section, hits);
 
     // cases charts
@@ -83,8 +94,8 @@ export function buildCharts(hits) {
     h2.innerText = "Cases";
     section.appendChild(h2);
 
-    buildChart(numberCasesDecidedChart, "number-cases-decided-chart", section, hits);
+    buildChart(numberCasesDecidedChart, "number-cases-decided-chart", section, lookingAtSingleTerm() ? allRecords : hits);
     buildChart(lowerCourtPyramidChart, "lower-court-pyramid-chart", section, hits);
-    buildChart(amicusCountScatterChart, "amicus-count-scatter-chart", section, hits);
+    buildChart(amicusCountScatterChart, "amicus-count-scatter-chart", section, lookingAtSingleTerm() ? allRecords : hits);
     buildChart(topicsTreeMapChart, "topics-tree-map-chart", section, hits);
 }
