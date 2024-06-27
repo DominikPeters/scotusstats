@@ -50,7 +50,7 @@ export async function j1Chart(containerElement, options) {
         fillContainer.className = 'j1-bar-fill-container';
 
         if (tooltip) {
-            tippy.default(fillContainer, { content: tooltip, allowHTML: true });
+            tippy.default(fillContainer, { content: tooltip, allowHTML: true, interactive: true });
         }
 
         // Bar fill
