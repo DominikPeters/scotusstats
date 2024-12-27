@@ -10,6 +10,9 @@ import argumentLengthScatterChart from './charts/argument/argumentLengthScatter.
 import advocateTimeChart from './charts/argument/advocateTime.js';
 
 import numberMajorityOpinionsWrittenChart from './charts/opinions/numberMajorityOpinionsWritten.js';
+import wordsWrittenByJusticeChart from './charts/opinions/wordsWrittenByJustice.js';
+import wordsWrittenByJusticeOverTimeChart from './charts/opinions/wordsWrittenByJusticeOverTime.js';
+import wordsWrittenOverTimeChart from './charts/opinions/wordsWrittenOverTime.js';
 import opinionDelayScatterChart from './charts/opinions/opinionDelayScatter.js';
 import opinionAssignmentSankeyChart from './charts/opinions/opinionAssignmentSankey.js';
 
@@ -81,6 +84,9 @@ export function buildCharts(hits, allRecords) {
     section.appendChild(h2);
 
     buildChart(numberMajorityOpinionsWrittenChart, "number-majority-opinions-written-chart", section, hits);
+    buildChart(wordsWrittenByJusticeChart, "words-written-by-justice-chart", section, hits);
+    buildChart(wordsWrittenByJusticeOverTimeChart, "words-written-by-justice-over-time-chart", section, lookingAtSingleTerm() ? allRecords : hits);
+    buildChart(wordsWrittenOverTimeChart, "words-written-over-time-chart", section, lookingAtSingleTerm() ? allRecords : hits);
     buildChart(opinionDelayScatterChart, "opinion-delay-scatter-chart", section, lookingAtSingleTerm() ? allRecords : hits);
     buildChart(opinionAssignmentSankeyChart, "opinion-assignment-sankey-chart", section, hits);
 
