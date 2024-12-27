@@ -39,6 +39,16 @@ function lookingAtSingleTerm() {
     return true;
 }
 
+function scrollToHash() {
+    const hash = window.location.hash;
+    if (hash) {
+        const element = document.querySelector(hash);
+        if (element) {
+            element.scrollIntoView({});
+        }
+    }
+}
+
 export function buildCharts(hits, allRecords) {
     if (!hits) return;
     const chartsContainer = document.getElementById('charts');
@@ -102,4 +112,6 @@ export function buildCharts(hits, allRecords) {
     buildChart(lowerCourtPyramidChart, "lower-court-pyramid-chart", section, hits);
     buildChart(amicusCountScatterChart, "amicus-count-scatter-chart", section, lookingAtSingleTerm() ? allRecords : hits);
     buildChart(topicsTreeMapChart, "topics-tree-map-chart", section, hits);
+
+    setTimeout(scrollToHash, 500);
 }
