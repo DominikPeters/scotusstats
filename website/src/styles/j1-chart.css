@@ -7,6 +7,7 @@ body {
     max-width: 100%;
     border: 1px solid #ccc;
     margin-bottom: 10px;
+    scroll-margin: 10px;
 }
 
 .j1-chart-content {

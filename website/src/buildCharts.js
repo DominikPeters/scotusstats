@@ -44,7 +44,7 @@ function scrollToHash() {
     if (hash) {
         const element = document.querySelector(hash);
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            element.scrollIntoView({});
         }
     }
 }
@@ -113,5 +113,5 @@ export function buildCharts(hits, allRecords) {
     buildChart(amicusCountScatterChart, "amicus-count-scatter-chart", section, lookingAtSingleTerm() ? allRecords : hits);
     buildChart(topicsTreeMapChart, "topics-tree-map-chart", section, hits);
 
-    scrollToHash();
+    setTimeout(scrollToHash, 500);
 }
