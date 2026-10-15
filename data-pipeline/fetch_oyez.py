@@ -8,9 +8,7 @@ Date: 2023-10-29
 import requests
 import json
 import os
-import sox
-from datetime import datetime
-import subprocess
+from court_cache import current_term
 import time
 import sys
 
@@ -21,25 +19,16 @@ stream_handler = logging.StreamHandler(sys.stdout)
 stream_handler.setLevel(logging.INFO)
 log.addHandler(stream_handler)
 
-def current_term():
-    now = datetime.now()
-    current_year = now.year
-    # Check if September 1st of the current year has passed
-    if now.month > 9 or (now.month == 9 and now.day > 1):
-        return str(current_year)
-    else:
-        return str(current_year - 1)
-    
 def get_argued_time(case_metadata):
     # argued date is unix timestamp
-    for date in case_metadata["timeline"]:
+    for date in case_metadata.get("timeline") or []:
         if date and date["event"] == "Argued":
             return date["dates"][0] 
     return None
 
 def get_decided_time(case_metadata):
     # decided date is unix timestamp
-    for date in case_metadata["timeline"]:
+    for date in case_metadata.get("timeline") or []:
         if date and date["event"] == "Decided":
             return date["dates"][0] 
     return None
@@ -61,9 +50,6 @@ def classify_advocates(advocates_info):
             advocates_ambiguous.append(advocate)
     return advocates_for_petitioner, advocates_for_respondent, advocates_ambiguous
     
-def mp3_duration(filename):
-    return sox.file_info.duration(filename)
-
 def analyze_transcript(case_metadata, oral_argument_transcript):
     # Extract advocate information
     advocates = {adv["advocate"]["name"]: adv for adv in case_metadata["advocates"]}
@@ -298,6 +284,8 @@ def handle_case(case_url, term, docket_number, redownload=False):
         time.sleep(1)
         with open(case_json_filename, "w") as f:
             json.dump(case_metadata, f, indent=2)
+
+    case_metadata["docket_number"] = case_metadata["docket_number"].strip()
 
     if get_argued_time(case_metadata) is None:
         log.info(f"Case {case_number} has no argued date, skipping")

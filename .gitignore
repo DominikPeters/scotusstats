@@ -50,6 +50,7 @@ build/Release
 
 # Dependency directories
 node_modules/
+.venv/
 jspm_packages/
 
 # Snowpack dependency directory (https://snowpack.dev/)
@@ -138,3 +139,11 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Source taxonomies required by the SCDB importers
+!data-pipeline/scdb/issues.json
+!data-pipeline/scdb/legal-provisions.json
+!data-pipeline/scdb/justice-ids.json
+
+# Published web-player catalog; raw Oyez source_jsons remain ignored
+!website/src/web/cases.json

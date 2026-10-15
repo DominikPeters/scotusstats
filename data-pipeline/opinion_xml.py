@@ -6,8 +6,9 @@ import os
 import json
 import requests
 import xml.etree.ElementTree as ET
+from pathlib import Path
+from court_cache import NegativeCache,fetch_document,options
 import time
-from tqdm import tqdm
 
 def get_word_count(document):
     count = 0
@@ -26,21 +27,19 @@ def get_num_footnotes(document):
         return 0
     return len(footnotes)
 
-def analyze_opinion(term, docket_number):
+def analyze_opinion(term, docket_number, refresh=False):
     filename = f"xml/{term}/{docket_number}.xml"
-    if not os.path.exists(filename):
+    if not os.path.exists(filename) or refresh:
         url = f"https://www.supremecourt.gov/xmls/archive/{docket_number}.xml"
         print(f"Downloading {url}")
-        response = requests.get(url)
+        content = fetch_document(url)
         time.sleep(1)
-        if response.status_code != 200:
+        if content is None:
+            misses.missing(docket_number)
             return None
-        content = response.content
-        if b"ERROR: File or directory not found" in content:
-            with open("xml404.list.txt", "a") as f404:
-                f404.write(f"{docket_number}\n")
-                print(f"404: {docket_number}")
-            return None
+        # Validate before caching a response (a login/error page is not an opinion).
+        ET.fromstring(content)
+        misses.found(docket_number)
         with open(filename, "wb") as file:
             file.write(content)
     else:
@@ -64,38 +63,23 @@ def analyze_opinion(term, docket_number):
         })
     return record
 
-# if __name__ == "__main__":
-#     record = analyze_opinion("21-442")
-#     for item in record:
-#         print(f"Opinion by {item['author']} ({item['disposition']}) has {item['word_count']} words and {item['num_footnotes']} footnotes.")
+def main():
+    global misses
+    args=options('Count opinion words and footnotes from Court XML')
+    misses=NegativeCache('xml404.list.txt')
+    data_folder='../data'
+    for term in sorted(os.listdir(data_folder)):
+        if len(term)!=4 or not term.isdigit() or not os.path.isdir(f'{data_folder}/{term}') or (args.term and term not in args.term):continue
+        os.makedirs(f'xml/{term}',exist_ok=True)
+        for case in sorted(os.listdir(f'{data_folder}/{term}')):
+            if not case.endswith('.json'):continue
+            docket=case[:-5].strip()
+            if not os.path.exists(f'xml/{term}/{docket}.xml') and misses.skip(docket,term,args.refresh_missing):continue
+            try:opinions=analyze_opinion(term,docket,args.refresh)
+            except (requests.RequestException,ET.ParseError) as error:
+                print(f'Could not read opinion for {docket}: {error}');continue
+            if opinions is None:continue
+            path=Path(data_folder)/term/case;record=json.loads(path.read_text());record['opinions']=opinions
+            path.write_text(json.dumps(record,indent=2))
 
-data_folder = "../data"
-
-with open("xml404.list.txt", "r") as f404:
-    dockets404 = set(f404.read().splitlines())
-
-# go through all terms (subfolders of data)
-for term in sorted(os.listdir(data_folder)):
-    if not len(term) == 4 or not os.path.isdir(f"{data_folder}/{term}"):
-        continue
-    print(f"Processing term {term}")
-    os.makedirs(f"xml/{term}", exist_ok=True)
-    for case in list(os.listdir(f"{data_folder}/{term}")):
-        if case.endswith(".json"):
-            # get the docket number
-            docket_number = case.split(".")[0]
-            if docket_number in dockets404:
-                continue
-            with open(f"{data_folder}/{term}/{case}", "r") as f:
-                case_data = json.load(f)
-            try:
-                opinions = analyze_opinion(term, docket_number)
-                if opinions is None:
-                    print(f"Could not get XML for {docket_number}")
-                    continue
-            except ET.ParseError as e:
-                print(f"Could not parse XML for {docket_number}")
-                continue
-            case_data["opinions"] = opinions
-            with open(f"{data_folder}/{term}/{case}", "w") as f:
-                json.dump(case_data, f, indent=2)
+if __name__=='__main__':main()
