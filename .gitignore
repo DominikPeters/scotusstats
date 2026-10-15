@@ -147,3 +147,7 @@ dist
 
 # Published web-player catalog; raw Oyez source_jsons remain ignored
 !website/src/web/cases.json
+
+# Python bytecode from pipeline checks
+__pycache__/
+*.py[cod]

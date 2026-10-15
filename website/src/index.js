@@ -11,7 +11,7 @@ const options = {
     aggregations: {
         term: {
             title: "Term",
-            size: 10,
+            size: 30,
             conjunction: false
         },
         lowerCourt: {
@@ -93,6 +93,10 @@ function buildSearch(data) {
     setUpMobileMenu();
 
     window.allRecords = unflattenHits(data);
+    fetch('/data/status.json').then(response => response.json()).then(status => {
+        const label = document.querySelector('.footer-updated');
+        if (label && status.updated_at) label.textContent = 'Last updated: ' + status.updated_at.slice(0, 10);
+    }).catch(() => {});
 
     const index = createIndex(data, options);
     const searchClient = getSearchClient(index);
@@ -104,7 +108,7 @@ function buildSearch(data) {
             scotusstats: {
                 refinementList: {
                     // term: ['2022', '2021', '2020', '2019'],
-                    term: ['2023']
+                    term: [String(Math.max(...data.map(record => Number(record.term))))]
                 },
             }
         },
