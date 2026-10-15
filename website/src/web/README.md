@@ -12,3 +12,5 @@ RewriteRule ^web/([0-9]+)(/.*)?$ /player/player.html?case=$1 [L,QSA]
 The player reads the original browser path to resolve the term and docket. Its `player.html`, `player.js`, portraits and supporting assets are maintained separately in `DominikPeters/scotus-videos` and deployed under `/player/`. They must already be present; the scotusstats webpack build does not create or replace them. Preserve this root rewrite rule during deployment.
 
 The catalog currently covers arguments through January 22, 2025. It is a historical snapshot, not yet connected to the new cloud update pipeline. MiniSearch is loaded from the versioned CDN URL in `index.html`.
+
+The search page merges this historical catalog with `/podcast/alignment/index.json` at load time. New aligned recordings appear automatically, with an explicit `recording` query parameter so multiple hearings remain distinguishable. The player prefers this shared Court alignment and falls back to Oyez when none exists.

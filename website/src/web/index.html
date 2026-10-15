@@ -222,7 +222,7 @@
         
         searchResults.innerHTML = casesToShow
           .map(result => `
-            <a class="result-item" href="/web/${result.href.split("/").map(encodeURIComponent).join("/")}/${encodeURIComponent(caseNameToSlug(result.name))}">
+            <a class="result-item" href="/web/${result.href.split("/").map(encodeURIComponent).join("/")}/${encodeURIComponent(caseNameToSlug(result.name))}${result.recording_id ? '?recording=' + encodeURIComponent(result.recording_id) : ''}">
               <div class="result-title">${highlightText(result.name, query)}</div>
               <div class="result-docket">${escapeHtml(result.docket_number)} · Argued ${escapeHtml(result.argued_date)}</div>
               <div class="result-description">${highlightText(result.description, query)}</div>
@@ -241,13 +241,25 @@
         });
       });
 
-      fetch("./cases.json")
-        .then(response => response.json())
+      Promise.all([
+        fetch("./cases.json").then(response => response.json()),
+        fetch('/podcast/alignment/index.json').then(response => {
+          if (!response.ok) throw new Error('Transcript index unavailable');
+          return response.json();
+        }).catch(() => ({recordings: {}}))
+      ]).then(([historical, index]) => {
+        const recordings = Object.values(index.recordings || {});
+        const keys = new Set(recordings.map(r => `${r.term}/${r.docket}/${r.argument_date}`));
+        return historical.filter(c => !keys.has(`${c.term}/${c.docket_number.trim()}/${c.argued_date}`))
+          .concat(recordings.map(r => ({id: 'recording:' + r.recording_id, href: r.term + '/' + r.docket,
+            name: r.case_name, docket_number: r.docket, argued_date: r.argument_date,
+            description: '', recording_id: r.recording_id})));
+      })
         .then(cases => {
           allCases = cases;
           miniSearch = new MiniSearch({
             fields: ['name', 'docket_number', 'description'],
-            storeFields: ['name', 'docket_number', 'href', 'argued_date', 'description'],
+            storeFields: ['name', 'docket_number', 'href', 'argued_date', 'description', 'recording_id'],
             searchOptions: {
               boost: { name: 3, docket_number: 2 },
               fuzzy: 0.2
