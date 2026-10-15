@@ -40,6 +40,7 @@ module.exports = {
         { from: 'src/favicon.svg', to: 'favicon.svg' },
         { from: 'src/podcast', to: 'podcast' },
         { from: 'src/videos', to: 'videos' },
+        { from: 'src/web', to: 'web', globOptions: { ignore: ['**/source_jsons/**', '**/*.py', '**/README.md', '**/__pycache__/**', '**/.DS_Store'] } },
       ],
     }),
   ],

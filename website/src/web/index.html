@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#4a75b5">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/minisearch@7.1.1/dist/umd/index.min.js"></script>
+
+  <link rel="stylesheet" href="../styles/satellite-min.css">
+  <link rel="stylesheet" href="../styles/app.css">
+
+  <title>Oral Argument Web Player | scotusstats</title>
+
+  <style>
+    .search-container {
+      margin: 2rem auto;
+      max-width: 800px;
+    }
+    .search-input {
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 16px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+      background: var(--background);
+      color: var(--text);
+    }
+    .search-results {
+      margin-top: 1rem;
+    }
+    .result-item {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .result-item:hover {
+      background-color: var(--hover-bg);
+    }
+    .result-title {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .result-docket {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    .result-description {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .highlight {
+      background-color: var(--highlight-bg, #fff3b0);
+      border-radius: 2px;
+    }
+    @media (prefers-color-scheme: dark) {
+      .highlight {
+        background-color: var(--highlight-bg, #45450a);
+      }
+    }
+    .sort-controls {
+      margin: 1rem 0;
+      color: var(--text-muted);
+      display: none;
+    }
+    .sort-controls span {
+      color: var(--text-muted);
+      margin-right: 0.5rem;
+    }
+    .sort-controls a {
+      color: hsl(216, 42%, 60%);
+      text-decoration: none;
+      cursor: pointer;
+      padding: 0 0.25rem;
+    }
+    .sort-controls a:hover {
+      color: hsl(216, 42%, 80%);
+    }
+    .sort-controls a.active {
+      font-weight: bold;
+      color: hsl(216, 42%, 84%);
+    }
+    @media (prefers-color-scheme: dark) {
+      .search-input {
+        border-color: hsl(216, 42%, 35%);
+      }
+      .result-item {
+        border-color: hsl(216, 42%, 35%);
+      }
+      .result-item:hover {
+        background-color: hsl(216, 42%, 15%);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <h1 class="header-title">
+      <a href="/">scotusstats.com</a>
+    </h1>
+    <a href="/podcast" class="header-link">Podcast</a>
+    <a href="/videos" class="header-link">Videos</a>
+    <a href="/web" class="header-link">Web Player</a>
+  </header>
+
+  <main style="text-align: center; padding: 1rem;">
+
+    <h2>Oral Argument Web Player</h2>
+
+    <section style="max-width: 800px; margin: 0 auto; text-align: left;">
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search cases by name, docket number, or description...">
+        <div class="sort-controls">
+          <span>Sort by:</span>
+          <a href="#" data-sort="relevance" class="active">Relevance</a>
+          <span>&middot;</span>
+          <a href="#" data-sort="date">Date</a>
+        </div>
+        <div class="search-results"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <span class="footer-about">
+      Built by <a href="https://dominik-peters.de">Dominik Peters</a> 
+      &middot; <a href="https://github.com/dominikpeters/scotus-videos">GitHub</a>
+    </span>
+    <span class="footer-updated">Last updated: 2025-01-11</span>
+  </footer>
+
+  <script>
+
+    function escapeHtml(text) {
+      return String(text ?? "").replace(/[&<>"\']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;", "\'":"&#39;"}[c]));
+    }
+
+    function main() {
+      const searchInput = document.querySelector('.search-input');
+      const searchResults = document.querySelector('.search-results');
+      const sortControls = document.querySelector('.sort-controls');
+      let miniSearch;
+      let allCases = [];
+      let currentSort = 'relevance';
+      let currentResults = [];
+
+      function caseNameToSlug(name) {
+        const replacements = {
+          "Inc.": "",
+          "L.L.C.": "",
+          "LLC": "",
+          "Corp.": "",
+          "L.P.": "",
+          "City of": "",
+          "City and County of": "",
+          "County of": "",
+          "Food and Drug Administration": "FDA",
+          "Environmental Protection Agency": "EPA",
+          "Board of Governors of the Federal Reserve System": "Federal Reserve",
+          "Securities and Exchange Commission": "SEC",
+          "Federal Communications Commission": "FCC",
+          "Federal Trade Commission": "FTC",
+          "National Labor Relations Board": "NLRB",
+          "Department of Health and Human Services": "HHS",
+          "Consumer Financial Protection Bureau": "CFPB",
+          "et al.": "",
+        }
+        let slug = name;
+        for (const [find, replace] of Object.entries(replacements)) {
+          slug = slug.replaceAll(find, replace);
+        }
+        // for dots surrounded by single letters, replace with nothing (for e.g. "U.S.")
+        slug = slug.replaceAll(/(?<=\b[A-Z])\.(?=\b)/g, '');
+        return slug.replaceAll(/[^a-z0-9]+/gi, ' ').trim().replaceAll(' ', '-').toLowerCase();
+      }
+
+      function highlightText(text, query) {
+        text = String(text ?? '');
+        if (!query.trim()) return escapeHtml(text);
+        const words = query.trim().split(/\s+/);
+        const escapedWords = words.map(word => word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        const regex = new RegExp(`(${escapedWords.join('|')})`, 'gi');
+        return text.split(regex).map((part, index) => index % 2
+          ? '<span class="highlight">' + escapeHtml(part) + '</span>'
+          : escapeHtml(part)).join('');
+      }
+
+      function updateSortControls(sort) {
+        currentSort = sort;
+        document.querySelectorAll('.sort-controls a').forEach(a => {
+          a.classList.toggle('active', a.dataset.sort === sort);
+        });
+      }
+
+      function sortResults(results, sortBy) {
+        if (sortBy === 'date') {
+          return [...results].sort((a, b) => b.argued_date.localeCompare(a.argued_date));
+        }
+        return results; // Keep MiniSearch relevance order
+      }
+
+      function displayResults(results, query = '') {
+        currentResults = results;
+        const sortedResults = sortResults(results, currentSort);
+        const casesToShow = sortedResults.slice(0, 200);
+        
+        // Show/hide sort controls based on whether we're searching
+        sortControls.style.display = query.length >= 2 ? 'block' : 'none';
+        
+        searchResults.innerHTML = casesToShow
+          .map(result => `
+            <a class="result-item" href="/web/${result.href.split("/").map(encodeURIComponent).join("/")}/${encodeURIComponent(caseNameToSlug(result.name))}">
+              <div class="result-title">${highlightText(result.name, query)}</div>
+              <div class="result-docket">${escapeHtml(result.docket_number)} · Argued ${escapeHtml(result.argued_date)}</div>
+              <div class="result-description">${highlightText(result.description, query)}</div>
+            </a>
+          `)
+          .join('');
+      }
+
+      // Sort control event listeners
+      document.querySelectorAll('.sort-controls a').forEach(a => {
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          const newSort = e.target.dataset.sort;
+          updateSortControls(newSort);
+          displayResults(currentResults, searchInput.value);
+        });
+      });
+
+      fetch("./cases.json")
+        .then(response => response.json())
+        .then(cases => {
+          allCases = cases;
+          miniSearch = new MiniSearch({
+            fields: ['name', 'docket_number', 'description'],
+            storeFields: ['name', 'docket_number', 'href', 'argued_date', 'description'],
+            searchOptions: {
+              boost: { name: 3, docket_number: 2 },
+              fuzzy: 0.2
+            }
+          });
+
+          miniSearch.addAll(cases);
+          
+          // Show initial cases
+          displayResults(cases.sort((a, b) => b.argued_date.localeCompare(a.argued_date)));
+
+          searchInput.addEventListener('input', () => {
+            const query = searchInput.value;
+            if (query.length < 2) {
+              displayResults(allCases);
+              return;
+            }
+
+            const results = miniSearch.search(query);
+            displayResults(results, query);
+          });
+        });
+    }
+
+    main();
+
+  </script>
+
+</body>
+
+</html>
