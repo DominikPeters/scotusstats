@@ -3,7 +3,7 @@ import json
 import os
 import sys
 
-db_file = "scdb/SCDB_2023_01_caseCentered_Citation.csv"
+db_file = "scdb/SCDB_2025_01_caseCentered_Citation.csv"
 
 # load coding data
 issues = json.load(open("scdb/issues.json"))

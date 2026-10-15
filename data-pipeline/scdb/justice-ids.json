@@ -1,0 +1,212 @@
+[
+    {
+        "name": "Ketanji Brown Jackson",
+        "last_name": "Jackson",
+        "scdb_id": "KBJackson",
+        "scdb_number": 118
+    },
+    {
+        "name": "Amy Coney Barrett",
+        "last_name": "Barrett",
+        "scdb_id": "ACBarrett",
+        "scdb_number": 117
+    },
+    {
+        "name": "Brett M. Kavanaugh",
+        "last_name": "Kavanaugh",
+        "scdb_id": "BMKavanaugh",
+        "scdb_number": 116
+    },
+    {
+        "name": "Neil Gorsuch",
+        "last_name": "Gorsuch",
+        "scdb_id": "NMGorsuch",
+        "scdb_number": 115
+    },
+    {
+        "name": "Elena Kagan",
+        "last_name": "Kagan",
+        "scdb_id": "EKagan",
+        "scdb_number": 114
+    },
+    {
+        "name": "Sonia Sotomayor",
+        "last_name": "Sotomayor",
+        "scdb_id": "SSotomayor",
+        "scdb_number": 113
+    },
+    {
+        "name": "Samuel A. Alito, Jr.",
+        "last_name": "Alito",
+        "scdb_id": "SAAlito",
+        "scdb_number": 112
+    },
+    {
+        "name": "John G. Roberts, Jr.",
+        "last_name": "Roberts",
+        "scdb_id": "JGRoberts",
+        "scdb_number": 111
+    },
+    {
+        "name": "Stephen G. Breyer",
+        "last_name": "Breyer",
+        "scdb_id": "SGBreyer",
+        "scdb_number": 110
+    },
+    {
+        "name": "Ruth Bader Ginsburg",
+        "last_name": "Ginsburg",
+        "scdb_id": "RBGinsburg",
+        "scdb_number": 109
+    },
+    {
+        "name": "Clarence Thomas",
+        "last_name": "Thomas",
+        "scdb_id": "CThomas",
+        "scdb_number": 108
+    },
+    {
+        "name": "David H. Souter",
+        "last_name": "Souter",
+        "scdb_id": "DHSouter",
+        "scdb_number": 107
+    },
+    {
+        "name": "Anthony M. Kennedy",
+        "last_name": "Kennedy",
+        "scdb_id": "AMKennedy",
+        "scdb_number": 106
+    },
+    {
+        "name": "Antonin Scalia",
+        "last_name": "Scalia",
+        "scdb_id": "AScalia",
+        "scdb_number": 105
+    },
+    {
+        "name": "Sandra Day O'Connor",
+        "last_name": "O'Connor",
+        "scdb_id": "SDOConnor",
+        "scdb_number": 104
+    },
+    {
+        "name": "John Paul Stevens",
+        "last_name": "Stevens",
+        "scdb_id": "JPStevens",
+        "scdb_number": 103
+    },
+    {
+        "name": "William H. Rehnquist",
+        "last_name": "Rehnquist",
+        "scdb_id": "WHRehnquist",
+        "scdb_number": 102
+    },
+    {
+        "name": "Lewis F. Powell, Jr.",
+        "last_name": "Powell",
+        "scdb_id": "LFPowell",
+        "scdb_number": 101
+    },
+    {
+        "name": "Harry A. Blackmun",
+        "last_name": "Blackmun",
+        "scdb_id": "HABlackmun",
+        "scdb_number": 100
+    },
+    {
+        "name": "Warren E. Burger",
+        "last_name": "Burger",
+        "scdb_id": "WEBurger",
+        "scdb_number": 99
+    },
+    {
+        "name": "Thurgood Marshall",
+        "last_name": "Marshall",
+        "scdb_id": "TMarshall",
+        "scdb_number": 98
+    },
+    {
+        "name": "Abe Fortas",
+        "last_name": "Fortas",
+        "scdb_id": "AFortas",
+        "scdb_number": 97
+    },
+    {
+        "name": "Arthur J. Goldberg",
+        "last_name": "Goldberg",
+        "scdb_id": "AJGoldberg",
+        "scdb_number": 96
+    },
+    {
+        "name": "Byron R. White",
+        "last_name": "White",
+        "scdb_id": "BRWhite",
+        "scdb_number": 95
+    },
+    {
+        "name": "Potter Stewart",
+        "last_name": "Stewart",
+        "scdb_id": "PStewart",
+        "scdb_number": 94
+    },
+    {
+        "name": "Charles E. Whittaker",
+        "last_name": "Whittaker",
+        "scdb_id": "CEWhittaker",
+        "scdb_number": 93
+    },
+    {
+        "name": "William J. Brennan, Jr.",
+        "last_name": "Brennan",
+        "scdb_id": "WJBrennan",
+        "scdb_number": 92
+    },
+    {
+        "name": "John M. Harlan II",
+        "last_name": "Harlan",
+        "scdb_id": "JHarlan2",
+        "scdb_number": 91
+    },
+    {
+        "name": "Earl Warren",
+        "last_name": "Warren",
+        "scdb_id": "EWarren",
+        "scdb_number": 90
+    },
+    {
+        "name": "Tom C. Clark",
+        "last_name": "Clark",
+        "scdb_id": "TCClark",
+        "scdb_number": 88
+    },
+    {
+        "name": "Harold Burton",
+        "last_name": "Burton",
+        "scdb_id": "HHBurton",
+        "scdb_number": 86
+    },
+    {
+        "name": "Ketanji Brown Jackson",
+        "last_name": "Jackson",
+        "scdb_id": "RHJackson",
+        "scdb_number": 84
+    },
+    {
+        "name": "William O. Douglas",
+        "last_name": "Douglas",
+        "scdb_id": "WODouglas",
+        "scdb_number": 81
+    },
+    {
+        "name": "Felix Frankfurter",
+        "last_name": "Frankfurter",
+        "scdb_id": "FFrankfurter",
+        "scdb_number": 80
+    },
+    {
+        "name": "Hugo L. Black",
+        "last_name": "Black",
+        "scdb_id": "HLBlack",
+        "scdb_number": 78
+    }
+]

@@ -1,8 +1,8 @@
-import pandas as pd
 import json
 import os
 import sys
 import csv
+from collections import defaultdict
 import xml.etree.ElementTree as ET
 
 def get_syllabus(docket_number):
@@ -33,7 +33,7 @@ print("SCDB DECISIONS", flush=True)
 print("Reading SCDB file", flush=True)
 
 # Read the CSV file
-with open("scdb/SCDB_2023_01_justiceCentered_Citation.csv", encoding='ISO-8859-1') as file:
+with open("scdb/SCDB_2025_01_justiceCentered_Citation.csv", encoding='ISO-8859-1') as file:
     reader = csv.DictReader(file)
     rows = list(reader)
 
@@ -49,7 +49,11 @@ for term in terms:
         if case.endswith(".json"):
             # get the docket number
             docket_number = case.split(".")[0]
-            data_docket_numbers.add(docket_number)
+            data_docket_numbers.add((term, docket_number))
+
+case_rows = defaultdict(list)
+for row in rows:
+    case_rows[(row["term"], row["docket"])].append(row)
 
 current_case = None
 for row_nr, row in enumerate(rows):
@@ -61,14 +65,15 @@ for row_nr, row in enumerate(rows):
     #     continue
 
     row_docket = row['docket']
-    if row_docket == current_case:
+    row_case = (term, row_docket)
+    if row_case == current_case:
         continue # not the first row about this case, so already handled in previous iterations
 
-    current_case = row_docket
+    current_case = row_case
     docket_number = row_docket
     case_row = row
 
-    if docket_number not in data_docket_numbers:
+    if row_case not in data_docket_numbers:
         continue
 
     with open(f"../data/{term}/{docket_number}.json", "r") as f:
@@ -82,20 +87,16 @@ for row_nr, row in enumerate(rows):
 
     # Extract the names of the justices and how they voted
     justices_info = []
-    final_row_nr = min(len(rows), row_nr+11)
-    for following_row in rows[row_nr:final_row_nr]:
-        if following_row['docket'] == current_case:
-            if following_row['justiceName']: # and following_row['majority'] and following_row['opinion']:
-                justices_info.append({
-                    'justiceName': translate(following_row['justiceName']), 
-                    'majority': following_row['majority'], 
-                    'opinion': following_row['opinion'],
-                    'vote': following_row['vote'],
-                    'agreement': [
-                        translate_scdb_num[following_row[col]]["last_name"] 
-                        for col in ['firstAgreement', 'secondAgreement'] 
-                        if following_row[col].strip() and following_row[col] != '0'
-                    ]})
+    for following_row in case_rows[row_case]:
+        if following_row['justiceName']:
+            justices_info.append({
+                'justiceName': translate(following_row['justiceName']),
+                'majority': following_row['majority'],
+                'opinion': following_row['opinion'],
+                'vote': following_row['vote'],
+                'agreement': [translate_scdb_num[following_row[col]]["last_name"]
+                              for col in ['firstAgreement','secondAgreement']
+                              if following_row[col].strip() and following_row[col]!='0']})
 
     # if docket_number == "18-1323":
     #     print(case_row['decisionType'])
