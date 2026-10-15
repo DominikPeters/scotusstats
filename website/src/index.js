@@ -78,7 +78,7 @@ const options = {
     }
 };
 
-fetch("/data/flattened_records.json")
+fetch("/data/flattened_records.json", {cache: "no-cache"})
     .then(response => response.json())
     .then(data => {
         buildSearch(data);
@@ -93,7 +93,7 @@ function buildSearch(data) {
     setUpMobileMenu();
 
     window.allRecords = unflattenHits(data);
-    fetch('/data/status.json').then(response => response.json()).then(status => {
+    fetch('/data/status.json', {cache: 'no-cache'}).then(response => response.json()).then(status => {
         const label = document.querySelector('.footer-updated');
         if (label && status.updated_at) label.textContent = 'Last updated: ' + status.updated_at.slice(0, 10);
     }).catch(() => {});
